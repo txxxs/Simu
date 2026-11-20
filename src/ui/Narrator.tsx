@@ -13,6 +13,8 @@ const QUICK: [string, string][] = [
   ['Nouveau parti', 'Un nouveau parti communiste est créé et rejoint une alliance d’extrême gauche'],
   ['Interview', 'Le Premier ministre est invité sur Info 24'],
   ['Discours', 'Le président réagit à la situation'],
+  ['Fixer un score', 'Le RN passe à 40 %'],
+  ['Fixer des sièges', 'Le PS a 200 sièges'],
   ['Remaniement', 'Le Premier ministre annonce un remaniement'],
 ]
 

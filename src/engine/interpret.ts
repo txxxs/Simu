@@ -205,9 +205,32 @@ export function interpretOffline(s: GameState, text: string): { ops: Op[]; notes
     ops.push({ op: 'propose_law', title: title && title.length < 90 ? title : DOMAINS[dom].titles[0], domain: dom, byGovernment: gov, partyId: gov ? undefined : pId(0) }); used.add('law')
   }
 
+  // ---- contrôle direct : le narrateur fixe des chiffres ----
+  const econ = /(chomage|inflation|croissance|dette|deficit|popularite (?:du gouvernement|de l'executif|du president))\D{0,25}?(\d+(?:[.,]\d+)?)\s*%?/.exec(t)
+  if (econ && /(passe|monte|grimpe|tombe|descend|atteint|est|a|fixe|bondit|chute|\bde\b)/.test(t) && !parties.length) {
+    ops.push({ op: 'set_economy', metric: econ[1].split(' ')[0], value: Number(econ[2].replace(',', '.')) * (/(chute|tombe|descend).*(croissance)|croissance.*(negative|recul)/.test(t) ? -1 : 1) }); used.add('econ')
+  }
+  if (parties.length && !used.has('create') && !used.has('econ')) {
+    const seatsM = /(\d+)\s*(?:sieges?|deputes?)/.exec(t)
+    const supM = /(passe|monte|grimpe|tombe|descend|chute|atteint|est a|est donne a|obtient|recueille|culmine|vaut|fait)\s*(?:a|jusqu'a)?\s*(\d+(?:[.,]\d+)?)\s*%/.exec(t)
+    if (seatsM && /(a|obtient|compte|passe|dispose|remporte|gagne|perd|dispose de|descend|monte)\b/.test(t) && !/dissol/.test(t)) {
+      const cur = s.deputies.filter((d) => d.partyId === pId(0)).length
+      const n = Number(seatsM[1])
+      const target = /\bgagne\b|\bremporte\b.*de plus/.test(t) ? cur + n : /\bperd\b/.test(t) ? cur - n : n
+      ops.push({ op: 'set_seats', partyId: pId(0)!, seats: target }); used.add('seats')
+    } else if (supM) {
+      ops.push({ op: 'set_support', partyId: pId(0)!, value: Number(supM[2].replace(',', '.')) }); used.add('support')
+    }
+  }
+  if (/(devient|est elu(e)?|elu(e)?|est nomme(e)?|nomme(e)?)\s+(le |la )?president(e)?( de la republique)?\b|nouveau president de la republique|nouvelle presidente de la republique/.test(t) && !/president(e)? (du|de la|d')\s*(parti|groupe|assemblee|senat|conseil|region|directoire)/.test(t) && !/(du parti|du groupe)/.test(t) && !used.has('leader')) {
+    const cand = persons.find((p) => p.id !== s.president.personId)
+    const nm = new RegExp(`${CAP.source}\\s+(?:devient|est elu|est elue|est nomme|est nommee)`, 'u').exec(orig)?.[1]
+    if (cand || nm) { ops.push({ op: 'set_president', personId: cand?.id, personName: cand ? undefined : nm }); used.add('pres') }
+  }
+
   // ---- crises et événements ----
   if (/crise\s+gouvernementale/.test(t) && s.government.pmId) { ops.push({ op: 'resign', personId: s.government.pmId }); used.add('crisis') }
-  else if (/(crise|catastrophe|inondation|canicule|seisme|guerre|krach|pandemie|epidemie|attentat|emeutes|violences urbaines|incendie|tempete)/.test(t) && !used.has('censure') && !used.has('dissol')) {
+  else if (/(crise|catastrophe|inondation|canicule|seisme|guerre|krach|pandemie|epidemie|attentat|emeutes|violences urbaines|incendie|tempete)/.test(t) && !used.has('censure') && !used.has('dissol') && !used.has('econ') && !used.has('support') && !used.has('seats')) {
     const kind = /econom|financ|krach|dette/.test(t) ? 'economique' : /sanitaire|pandemie|epidemie/.test(t) ? 'sanitaire' : /diplomat/.test(t) ? 'diplomatique' : /securit|attentat|emeutes|violences/.test(t) ? 'securitaire' : /inondation|canicule|seisme|tempete|incendie|catastrophe|climat/.test(t) ? 'climatique' : /guerre|internationale|energet/.test(t) ? 'internationale' : /sociale/.test(t) ? 'sociale' : 'politique'
     ops.push({ op: 'crisis', kind, severity: /(grave|majeure|historique|violente)/.test(t) ? 4 : /(legere|petite|mineure)/.test(t) ? 1 : 3, title: quoted }); used.add('crisis')
   }

@@ -49,3 +49,30 @@ describe('interprétation hors-ligne', () => {
     expect((ops[0] as { delta: number }).delta).toBe(15)
   })
 })
+
+describe('contrôle direct du narrateur', () => {
+  it('fixe des intentions de vote, des sièges, le président, l’économie', () => {
+    const s = s0()
+    const r1 = interpretOffline(s, 'Le RN passe à 40 %')
+    expect(r1.ops.map((o) => o.op)).toEqual(['set_support'])
+    applyOps(s, r1.ops, 'x')
+    expect(Math.abs(s.parties.rn.support - 40)).toBeLessThan(0.1)
+    expect(Math.abs(Object.values(s.parties).filter((p) => p.active).reduce((a, p) => a + p.support, 0) - 100)).toBeLessThan(0.01)
+
+    const r2 = interpretOffline(s, 'Le PS a 200 sièges')
+    expect(r2.ops.map((o) => o.op)).toEqual(['set_seats'])
+    applyOps(s, r2.ops, 'x')
+    expect(s.deputies.filter((d) => d.partyId === 'ps').length).toBe(200)
+    expect(s.deputies.length).toBe(577)
+
+    const r3 = interpretOffline(s, 'Marine Tondelier devient présidente de la République')
+    expect(r3.ops.map((o) => o.op)).toEqual(['set_president'])
+    applyOps(s, r3.ops, 'x')
+    expect(s.president.personId).toBe('tondelier')
+
+    const r4 = interpretOffline(s, 'Le chômage passe à 12 %')
+    expect(r4.ops.map((o) => o.op)).toEqual(['set_economy'])
+    applyOps(s, r4.ops, 'x')
+    expect(s.economy.unemployment).toBe(12)
+  })
+})

@@ -311,6 +311,10 @@ export type Op =
   | { op: 'resign'; personId: string }
   | { op: 'scandal'; partyId?: string; personId?: string; severity?: number; title?: string }
   | { op: 'shock'; partyId: string; delta: number; durable?: boolean; reason?: string }
+  | { op: 'set_support'; partyId: string; value: number }
+  | { op: 'set_seats'; partyId: string; seats: number }
+  | { op: 'set_president'; personId?: string; personName?: string }
+  | { op: 'set_economy'; metric: string; value: number }
   | { op: 'crisis'; kind: string; severity?: number; title?: string }
   | { op: 'protest'; topic?: string; severity?: number }
   | { op: 'censure_motion'; byPartyId?: string }

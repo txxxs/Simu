@@ -41,10 +41,11 @@ const OPS_SCHEMA = `Opérations possibles (champ "op"), utilise UNIQUEMENT les i
 - form_alliance {partyIds[], name?, purpose?, proposal?(true si simple proposition que l'autre peut refuser)} ; join_alliance {partyId, allianceId?} ; break_alliance {partyId?, allianceId?}
 - split_party {partyId, newName?, seatShare?, leaderName?} ; change_leader {partyId, newLeaderName?} ; resign {personId}
 - scandal {personId?|partyId?, severity(1..5), title?} ; shock {partyId, delta(points, ±), durable?(bool), reason?}
+- set_support {partyId, value(% voulu)} ; set_seats {partyId, seats(nombre de députés voulu)} ; set_president {personId?, personName?} ; set_economy {metric(chomage|inflation|croissance|dette|deficit|popularite), value}
 - crisis {kind(economique|sociale|sanitaire|diplomatique|securitaire|climatique|internationale|politique), severity, title?} ; protest {topic?, severity?}
 - censure_motion {byPartyId?} ; new_pm {personId?} ; reshuffle {} ; referendum {topic} ; propose_law {title, domain(retraites|immigration|fiscalite|securite|ecologie|sante|education|travail|institutions|autre), byGovernment?, partyId?}
 - poll {realInstrument?} ; media {kind(interview|debate|speech), personIds[], outlet?, topic?} ; advance_time {days} ; note {text}
-Ne décide PAS à la place des acteurs autonomes : ne traduis que ce que le narrateur a dit. Si l'intervention ne correspond à aucune opération, renvoie [{"op":"note","text":"..."}].`
+Le narrateur a tous les pouvoirs : traduis fidèlement ce qu'il dit, en combinant plusieurs opérations si besoin. Si aucune opération précise ne correspond, choisis les plus proches (shock, crisis, scandal, set_support…) plutôt que "note".`
 
 async function askJSON(system, payload, maxTokens = 2000) {
   const msg = await client.messages.create({

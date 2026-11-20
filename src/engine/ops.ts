@@ -1,8 +1,8 @@
 // Exécution des « opérations » issues des interventions du narrateur : modifie les données et génère les conséquences.
 import type { GameState, Op, OpResult, Party } from './types'
-import { chance, pick, rand } from './rng'
+import { chance, pick, rand, weightedPick } from './rng'
 import { clamp, fmtDate } from './util'
-import { impact } from './polls'
+import { impact, prox, shift } from './polls'
 import { MAJORITY, censureVote, chooseGovernment, fallOfGovernment, govSeats, installGovernment, newFictionalPerson, seatsOf } from './parliament'
 import { addNews, communique, logChronicle, publish } from './narrate'
 import { announceAlliance, breakAlliance, createAlliance, createParty, crisis, joinAlliance, adjustRelation, protest, publishPoll, referendum, scandal, splitParty, allianceOf, proposeAlliance, FAMILY_DEFAULTS } from './actions'
@@ -165,6 +165,65 @@ export function applyOps(s: GameState, ops: Op[], text: string, opts: ApplyOpts 
           if (!p) { warn('Choc : parti introuvable.'); break }
           impact(s, p.id, clamp(op.delta, -15, 15), { durable: op.durable === false ? 0.1 : 0.6, halfLife: 30, reason: op.reason ?? 'Intervention du narrateur' })
           ok(`${p.acronym} ${op.delta >= 0 ? '+' : ''}${op.delta} pt (effet ${op.durable === false ? 'transitoire' : 'durable'}).`)
+          break
+        }
+        case 'set_support': {
+          const p = P(op.partyId)
+          if (!p) { warn('Parti introuvable.'); break }
+          s.shocks = s.shocks.filter((x) => x.partyId !== p.id)
+          shift(s, p.id, clamp(op.value, 0.1, 70) - p.support)
+          publish(s, { type: 'opinion', title: `Basculement d’opinion : ${p.acronym} à ${op.value.toFixed(1).replace('.', ',')} %`, detail: `Les intentions de vote pour ${p.name} s’établissent désormais autour de ${op.value.toFixed(1).replace('.', ',')} %.`, partyIds: [p.id], importance: 2, tone: 'neutre', subject: p.id })
+          ok(`${p.acronym} fixé à ${p.support.toFixed(1)} % d’intentions de vote (les autres s’ajustent).`)
+          break
+        }
+        case 'set_seats': {
+          const p = P(op.partyId)
+          if (!p) { warn('Parti introuvable.'); break }
+          const target = clamp(Math.round(op.seats), 0, 577)
+          let cur = seatsOf(s, p.id)
+          const others = Object.values(s.parties).filter((x) => x.active && x.id !== p.id)
+          while (cur !== target) {
+            if (cur < target) {
+              const pool = others.filter((o) => seatsOf(s, o.id) > 0)
+              if (!pool.length) break
+              const from = weightedPick(s, pool, pool.map((o) => prox(p, o) * seatsOf(s, o.id) + 0.01))
+              const d = s.deputies.find((x) => x.partyId === from.id)!
+              d.partyId = p.id
+              cur++
+            } else {
+              const to = weightedPick(s, others, others.map((o) => prox(p, o) * Math.max(o.support, 0.1)))
+              const d = s.deputies.find((x) => x.partyId === p.id)!
+              d.partyId = to.id
+              cur--
+            }
+          }
+          publish(s, { type: 'institution', title: `${p.acronym} compte désormais ${cur} députés`, detail: `La composition de l’Assemblée nationale évolue : ${p.name} dispose de ${cur} sièges sur 577.`, partyIds: [p.id], importance: 2, tone: 'neutre', subject: p.id })
+          ok(`${p.acronym} : ${cur} députés (total toujours 577).`)
+          break
+        }
+        case 'set_president': {
+          let per = op.personId ? s.persons[op.personId] : undefined
+          if (!per && op.personName) per = Object.values(s.persons).find((x) => x.name.toLowerCase() === op.personName!.toLowerCase())
+          if (!per && op.personName) { per = newFictionalPerson(s, null, 'Président de la République'); per.name = op.personName; per.bio = 'Personnalité fictive créée par le narrateur.' }
+          if (!per) { warn('Personnalité introuvable.'); break }
+          const old = s.president.personId ? s.persons[s.president.personId] : null
+          if (old && old.id !== per.id) old.role = 'Ancien président de la République'
+          s.president = { personId: per.id, partyId: per.partyId, since: s.date, interim: false }
+          per.role = 'Président de la République'
+          publish(s, { type: 'institution', title: `${per.name} devient président(e) de la République`, detail: `${per.name} prend la tête de l’État. ${old ? `Il/elle succède à ${old.name}.` : ''}`, partyIds: per.partyId ? [per.partyId] : [], personIds: [per.id], importance: 3, tone: 'neutre', subject: per.partyId ?? undefined })
+          ok(`${per.name} est président(e) de la République.`)
+          break
+        }
+        case 'set_economy': {
+          const e = s.economy
+          const m = op.metric.toLowerCase()
+          const map: [RegExp, () => void][] = [[/chomage/, () => (e.unemployment = clamp(op.value, 0, 40))], [/inflation/, () => (e.inflation = clamp(op.value, -5, 60))], [/croissance/, () => (e.growth = clamp(op.value, -15, 15))], [/dette/, () => (e.debt = clamp(op.value, 10, 400))], [/deficit/, () => (e.deficit = clamp(op.value, -5, 30))], [/popularite|approbation/, () => (e.approval = clamp(op.value, 3, 95))]]
+          const hit = map.find(([re]) => re.test(m))
+          if (!hit) { warn(`Indicateur inconnu : ${op.metric}`); break }
+          hit[1]()
+          logChronicle(s, 'economie', `Indicateur modifié : ${op.metric} = ${op.value}`, 'Fixé par le narrateur ; les autres indicateurs évolueront progressivement.')
+          addNews(s, { kind: 'headline', outlet: 'Info 24', importance: 2, title: `Économie : ${op.metric} à ${op.value}`, body: 'Les nouveaux chiffres font réagir les responsables politiques.', source: 'narrateur' })
+          ok(`${op.metric} fixé à ${op.value}.`)
           break
         }
         case 'crisis': { const c = crisis(s, { kind: op.kind, severity: op.severity, title: op.title }); ok(`Crise : ${c.title} (gravité ${c.severity}/5).`); break }

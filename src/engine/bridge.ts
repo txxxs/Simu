@@ -56,6 +56,10 @@ export function sanitizeOps(s: GameState, raw: unknown): Op[] {
       case 'resign': { const p = person(r.personId); if (p) out.push({ op: 'resign', personId: p }); break }
       case 'scandal': { const p = person(r.personId); const q = party(r.partyId); if (p || q) out.push({ op: 'scandal', personId: p, partyId: q, severity: num(r.severity, 1, 5), title: str(r.title, 120) }); break }
       case 'shock': { const q = party(r.partyId); const d = num(r.delta, -15, 15); if (q && d !== undefined) out.push({ op: 'shock', partyId: q, delta: d, durable: r.durable !== false, reason: str(r.reason, 140) }); break }
+      case 'set_support': { const q = party(r.partyId); const v = num(r.value, 0.1, 70); if (q && v !== undefined) out.push({ op: 'set_support', partyId: q, value: v }); break }
+      case 'set_seats': { const q = party(r.partyId); const v = num(r.seats, 0, 577); if (q && v !== undefined) out.push({ op: 'set_seats', partyId: q, seats: Math.round(v) }); break }
+      case 'set_president': { const p = person(r.personId); const n = str(r.personName, 60); if (p || n) out.push({ op: 'set_president', personId: p, personName: n }); break }
+      case 'set_economy': { const v = num(r.value, -50, 400); const m = str(r.metric, 20); if (m && v !== undefined) out.push({ op: 'set_economy', metric: m, value: v }); break }
       case 'crisis': out.push({ op: 'crisis', kind: str(r.kind, 20) ?? 'politique', severity: num(r.severity, 1, 5), title: str(r.title, 120) }); break
       case 'protest': out.push({ op: 'protest', topic: str(r.topic, 80), severity: num(r.severity, 1, 5) }); break
       case 'censure_motion': out.push({ op: 'censure_motion', byPartyId: party(r.byPartyId) }); break
