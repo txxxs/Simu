@@ -11,7 +11,7 @@ body{
   position:relative;
 }
 /* zones de sécurité TikTok : ~150px haut, ~380px bas (boutons/légende) */
-.safe{position:absolute;left:70px;right:70px;top:200px;bottom:380px;display:flex;flex-direction:column}
+.safe{position:absolute;left:70px;right:70px;top:190px;bottom:330px;display:flex;flex-direction:column}
 .logo{position:absolute;top:60px;left:70px;height:92px}
 .tag{position:absolute;top:78px;right:70px;font-weight:800;font-size:28px;letter-spacing:6px;
   text-transform:uppercase;color:var(--grey)}

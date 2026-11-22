@@ -19,6 +19,6 @@ const server = http.createServer((q, r) => {
   fs.mkdirSync('output/candidats', { recursive: true });
   for (const f of ['citation','sondage','jx','fiche']) await shot(f + '.html', `output/${f}.png`);
   await shot('grille.html', 'output/grille.png');
-  for (const c of JSON.parse(fs.readFileSync('candidats.json'))) await shot(`candidat.html?id=${c.id}`, `output/candidats/${c.id}.png`);
+  for (const c of JSON.parse(fs.readFileSync('candidats.json')).filter(c => fs.existsSync(`assets/candidats/${c.id}.jpg`))) await shot(`candidat.html?id=${c.id}`, `output/candidats/${c.id}.png`);
   await b.close(); server.close();
 })();
