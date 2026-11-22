@@ -24,7 +24,10 @@ for k, t in C.items():
       d = json.loads(curl("https://fr.wikipedia.org/api/rest_v1/page/summary/"+urllib.parse.quote(t)))
       fname = urllib.parse.unquote(d["originalimage"]["source"].split("?")[0].split("/")[-1])
       time.sleep(2)
-      curl(d["originalimage"]["source"].split("?")[0], f"{OUT}/{k}_raw")
+      orig = d["originalimage"]["source"].split("?")[0]
+      pre, name = orig.rsplit("/", 1); pre = pre.replace("/commons/", "/commons/thumb/")
+      try: curl(f"{pre}/{name}/960px-{name}", f"{OUT}/{k}_raw")   # miniature 960px (moins limitée)
+      except Exception: curl(orig, f"{OUT}/{k}_raw")
       im = Image.open(f"{OUT}/{k}_raw").convert("RGB"); im.thumbnail((1400,1400)); im.save(f"{OUT}/{k}.jpg", quality=90)
       os.remove(f"{OUT}/{k}_raw")
       time.sleep(2)
