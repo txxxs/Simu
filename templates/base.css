@@ -1,0 +1,23 @@
+/* Charte élys 2027 — format TikTok 1080x1920 */
+:root{
+  --navy:#0a1f4d; --navy-dark:#06122e; --navy-light:#12306e;
+  --red:#e8213a; --white:#ffffff; --grey:#9fb0d6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px}
+body{
+  font-family:'Inter Display','Inter',sans-serif; color:var(--white); overflow:hidden;
+  background:radial-gradient(ellipse at 50% 30%,var(--navy-light) 0%,var(--navy) 45%,var(--navy-dark) 100%);
+  position:relative;
+}
+/* zones de sécurité TikTok : ~150px haut, ~380px bas (boutons/légende) */
+.safe{position:absolute;left:70px;right:70px;top:200px;bottom:380px;display:flex;flex-direction:column}
+.logo{position:absolute;top:60px;left:70px;height:92px}
+.tag{position:absolute;top:78px;right:70px;font-weight:800;font-size:28px;letter-spacing:6px;
+  text-transform:uppercase;color:var(--grey)}
+.title{font-weight:900;font-size:104px;line-height:.98;letter-spacing:-3px;text-transform:uppercase}
+.title em{font-style:normal;color:var(--red)}
+.underline{width:300px;height:14px;background:var(--red);transform:skewX(-35deg);margin:28px 0 0 10px;border-radius:2px}
+.source{position:absolute;left:70px;right:70px;bottom:300px;font-size:26px;color:var(--grey);font-weight:500}
+.fiction{position:absolute;left:0;right:0;bottom:60px;text-align:center;font-size:22px;letter-spacing:4px;
+  color:var(--red);font-weight:800;text-transform:uppercase}
