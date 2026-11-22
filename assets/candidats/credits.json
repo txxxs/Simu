@@ -40,5 +40,17 @@
   "fichier": "Portrait_d'Éric_Zemmour,_avril_2022.jpg",
   "auteur": "Anh De France",
   "licence": "CC0"
+ },
+ "lepen": {
+  "nom": "Marine Le Pen",
+  "fichier": "Marine_Le_Pen_2025_(cropped).jpg",
+  "auteur": "Vox España",
+  "licence": "CC0"
+ },
+ "villepin": {
+  "nom": "Dominique de Villepin",
+  "fichier": "Dominique_de_Villepin_20100330_Salon_du_livre_de_Paris_2_cropped.jpg",
+  "auteur": "Georges Seguin (Okki)",
+  "licence": "CC BY-SA 3.0"
  }
 }
