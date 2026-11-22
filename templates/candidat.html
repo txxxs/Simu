@@ -24,6 +24,7 @@ Promise.all([fetch('../candidats.json').then(r=>r.json()),fetch('../assets/candi
  document.getElementById('photo').style.backgroundImage=`url(../assets/candidats/${id}.jpg)`;
  prenom.textContent=c.nom; nom.textContent=c.nom2; parti.textContent=c.parti; note.textContent=c.note;
  credit.textContent=cr.auteur?`Photo : ${cr.auteur} · ${cr.licence} · Wikimedia Commons`:'Photo : Wikimedia Commons';
+ let f=150; nom.style.whiteSpace='nowrap'; while(nom.scrollWidth>940&&f>60){f-=4;nom.style.fontSize=f+'px';}
  document.body.dataset.ready=1;
 });
 </script></body></html>
