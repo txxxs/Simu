@@ -1,0 +1,13 @@
+[
+ {"id":"lepen","nom":"Marine","nom2":"Le Pen","parti":"Rassemblement national","note":"En attente de la décision de la Cour de cassation"},
+ {"id":"melenchon","nom":"Jean-Luc","nom2":"Mélenchon","parti":"La France insoumise","note":""},
+ {"id":"glucksmann","nom":"Raphaël","nom2":"Glucksmann","parti":"Place publique","note":"Vainqueur de la primaire sociale-démocrate (octobre)"},
+ {"id":"villepin","nom":"Dominique","nom2":"de Villepin","parti":"La France humaniste","note":"Candidature officialisée le 20 novembre"},
+ {"id":"philippe","nom":"Édouard","nom2":"Philippe","parti":"Horizons","note":""},
+ {"id":"attal","nom":"Gabriel","nom2":"Attal","parti":"Renaissance","note":""},
+ {"id":"retailleau","nom":"Bruno","nom2":"Retailleau","parti":"Les Républicains","note":""},
+ {"id":"zemmour","nom":"Éric","nom2":"Zemmour","parti":"Reconquête","note":""},
+ {"id":"roussel","nom":"Fabien","nom2":"Roussel","parti":"Parti communiste français","note":""},
+ {"id":"lisnard","nom":"David","nom2":"Lisnard","parti":"Nouvelle Énergie","note":""},
+ {"id":"arthaud","nom":"Nathalie","nom2":"Arthaud","parti":"Lutte ouvrière","note":""}
+]

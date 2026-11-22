@@ -1,0 +1,18 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<style>
+.grid{margin-top:50px;display:grid;grid-template-columns:repeat(3,1fr);gap:34px 26px}
+.c{text-align:center}
+.c .ph{width:270px;height:270px;border-radius:50%;margin:0 auto;background-size:cover;background-position:center 20%;border:7px solid #fff}
+.c .n{margin-top:16px;font-size:34px;font-weight:900;text-transform:uppercase;line-height:1}
+.c .p{margin-top:6px;font-size:23px;color:var(--red);font-weight:800;letter-spacing:1px}
+.sub{margin-top:22px;font-size:34px;color:var(--grey);font-weight:700}
+</style></head><body>
+<img class="logo" src="../assets/logo.png"><div class="tag">Mise à jour</div>
+<div class="safe"><div class="title">Les <em>candidats</em><br>déclarés</div><div class="underline"></div>
+<div class="sub">1er tour : 18 avril 2027</div><div class="grid" id="g"></div></div>
+<div class="source">Source : LCP, 20 novembre 2026 · Photos : Wikimedia Commons</div>
+<script>
+fetch('../candidats.json').then(r=>r.json()).then(L=>{
+ g.innerHTML=L.map(c=>`<div class="c"><div class="ph" style="background-image:url(../assets/candidats/${c.id}.jpg)"></div><div class="n">${c.nom2}</div><div class="p">${c.parti}</div></div>`).join('');
+ document.body.dataset.ready=1;});
+</script></body></html>
