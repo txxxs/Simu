@@ -1,0 +1,21 @@
+{
+ "institut": "YouGov",
+ "dates": "12 au 17 novembre 2026",
+ "echantillon": "952 personnes",
+ "scenario": "Hypothèse avec tous les candidats · 1er tour",
+ "source": "Wikipédia, liste des sondages 2027 (22 nov. 2026)",
+ "resultats": [
+  {"nom":"Marine Le Pen","court":"Le Pen","id":"lepen","pct":32},
+  {"nom":"Jean-Luc Mélenchon","court":"Mélenchon","id":"melenchon","pct":19},
+  {"nom":"Raphaël Glucksmann","court":"Glucksmann","id":"glucksmann","pct":9},
+  {"nom":"David Lisnard","court":"Lisnard","id":"lisnard","pct":9},
+  {"nom":"Édouard Philippe","court":"Philippe","id":"philippe","pct":8},
+  {"nom":"Bruno Retailleau","court":"Retailleau","id":"retailleau","pct":6},
+  {"nom":"Gabriel Attal","court":"Attal","id":"attal","pct":5},
+  {"nom":"Marine Tondelier","court":"Tondelier","id":null,"pct":4},
+  {"nom":"Éric Zemmour","court":"Zemmour","id":"zemmour","pct":3},
+  {"nom":"Fabien Roussel","court":"Roussel","id":"roussel","pct":2},
+  {"nom":"Nicolas Dupont-Aignan","court":"Dupont-Aignan","id":null,"pct":2},
+  {"nom":"Nathalie Arthaud","court":"Arthaud","id":"arthaud","pct":1}
+ ]
+}

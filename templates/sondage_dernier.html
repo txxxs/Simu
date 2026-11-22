@@ -1,0 +1,35 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<style>
+.title{font-size:88px}.underline{margin-top:18px;height:12px}
+.head{margin-top:20px;display:inline-flex;align-items:center;gap:18px;font-size:30px;font-weight:800;color:var(--grey)}
+.head b{background:var(--red);color:#fff;padding:8px 18px;letter-spacing:3px;text-transform:uppercase;font-size:26px;transform:skewX(-8deg);display:inline-block}
+.rows{margin-top:26px;display:flex;flex-direction:column;gap:10px}
+.row{display:flex;align-items:center;gap:18px}
+.av{width:66px;height:66px;border-radius:50%;flex:none;border:4px solid #fff;background:#2a4a8f center 20%/cover;
+  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:26px}
+.name{width:225px;font-size:27px;font-weight:800;flex:none;white-space:nowrap}
+.track{flex:1;height:40px;background:rgba(255,255,255,.12);border-radius:22px;overflow:hidden}
+.fill{height:100%;border-radius:22px;background:#fff}
+.row.first .fill{background:var(--red)}
+.pct{width:104px;text-align:right;font-size:40px;font-weight:900;flex:none}
+.row.first .pct{color:var(--red)}
+.foot{margin-top:22px;font-size:22px;color:var(--grey);font-weight:500;line-height:1.35}
+.foot b{color:#fff}
+</style></head><body>
+<img class="logo" src="../assets/logo.png"><div class="tag">Dernier sondage</div>
+<div class="safe">
+<div class="title">Le <em>dernier</em><br>sondage</div><div class="underline"></div>
+<div class="head"><b id="inst"></b><span id="meta"></span></div>
+<div class="rows" id="rows"></div>
+<div class="foot" id="foot"></div></div>
+<script>
+fetch('../sondage.json').then(r=>r.json()).then(S=>{
+ const max=S.resultats[0].pct;
+ inst.textContent=S.institut; meta.textContent=S.dates+' · '+S.echantillon;
+ rows.innerHTML=S.resultats.map((r,i)=>`<div class="row ${i==0?'first':''}">
+  <div class="av" style="${r.id?`background-image:url(../assets/candidats/${r.id}.jpg)`:''}">${r.id?'':r.court[0]}</div>
+  <div class="name">${r.court}</div><div class="track"><div class="fill" style="width:${r.pct/max*100}%"></div></div>
+  <div class="pct">${r.pct}%</div></div>`).join('');
+ foot.innerHTML=`<b>${S.scenario}.</b> Intentions de vote à 5 mois du scrutin, pas des résultats.<br>Source : ${S.source}.`;
+ document.body.dataset.ready=1;});
+</script></body></html>

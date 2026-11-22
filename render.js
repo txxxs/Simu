@@ -12,13 +12,14 @@ const server = http.createServer((q, r) => {
   const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
   const shot = async (url, out) => {
     await p.goto(base + url); 
-    if (url.match(/candidat|grille/)) await p.waitForSelector('body[data-ready]');
+    if (url.match(/candidat|grille|sondage_dernier/)) await p.waitForSelector('body[data-ready]');
     await p.waitForTimeout(300);
     await p.screenshot({ path: out }); console.log('ok', out);
   };
   fs.mkdirSync('output/candidats', { recursive: true });
   for (const f of ['citation','sondage','jx','fiche']) await shot(f + '.html', `output/${f}.png`);
   await shot('grille.html', 'output/grille.png');
+  await shot('sondage_dernier.html', 'output/sondage_dernier.png');
   for (const c of JSON.parse(fs.readFileSync('candidats.json')).filter(c => fs.existsSync(`assets/candidats/${c.id}.jpg`))) await shot(`candidat.html?id=${c.id}`, `output/candidats/${c.id}.png`);
   await b.close(); server.close();
 })();
