@@ -5,7 +5,8 @@ import json, subprocess, time, urllib.parse, os, re
 C = {"arthaud":"Nathalie_Arthaud","melenchon":"Jean-Luc_Mélenchon","roussel":"Fabien_Roussel",
      "glucksmann":"Raphaël_Glucksmann","zemmour":"Éric_Zemmour","lepen":"Marine_Le_Pen",
      "villepin":"Dominique_de_Villepin","attal":"Gabriel_Attal","philippe":"Édouard_Philippe",
-     "retailleau":"Bruno_Retailleau","lisnard":"David_Lisnard"}
+     "retailleau":"Bruno_Retailleau","lisnard":"David_Lisnard",
+     "tondelier":"Marine_Tondelier","dupontaignan":"Nicolas_Dupont-Aignan"}
 OUT = "assets/candidats"; os.makedirs(OUT, exist_ok=True)
 def curl(u, out=None):
     for i in range(6):
