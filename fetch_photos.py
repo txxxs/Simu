@@ -17,19 +17,23 @@ def curl(u, out=None):
         time.sleep(4*(i+1))
     raise RuntimeError(u+" "+code)
 credits = json.load(open(OUT+"/credits.json")) if os.path.exists(OUT+"/credits.json") else {}
+def save(): json.dump(credits, open(OUT+"/credits.json","w"), ensure_ascii=False, indent=1)
 for k, t in C.items():
-    if os.path.exists(f"{OUT}/{k}.jpg") and k in credits: continue
-    d = json.loads(curl("https://fr.wikipedia.org/api/rest_v1/page/summary/"+urllib.parse.quote(t)))
-    fname = urllib.parse.unquote(d["originalimage"]["source"].split("?")[0].split("/")[-1])
-    time.sleep(2)
-    curl(d["originalimage"]["source"].split("?")[0], f"{OUT}/{k}_raw")
-    im = Image.open(f"{OUT}/{k}_raw").convert("RGB"); im.thumbnail((1400,1400)); im.save(f"{OUT}/{k}.jpg", quality=90)
-    os.remove(f"{OUT}/{k}_raw")
-    time.sleep(2)
-    m = json.loads(curl("https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&iiprop=extmetadata&format=json&titles=File:"+urllib.parse.quote(fname)))
-    em = list(m["query"]["pages"].values())[0]["imageinfo"][0]["extmetadata"]
-    strip = lambda s: re.sub(r"<[^>]+>", "", s or "").strip()
-    credits[k] = {"nom": d["title"], "fichier": fname, "auteur": strip(em.get("Artist",{}).get("value")),
-                  "licence": strip(em.get("LicenseShortName",{}).get("value"))}
-    print(k, credits[k]); time.sleep(2)
+  try:
+      if os.path.exists(f"{OUT}/{k}.jpg") and k in credits: continue
+      d = json.loads(curl("https://fr.wikipedia.org/api/rest_v1/page/summary/"+urllib.parse.quote(t)))
+      fname = urllib.parse.unquote(d["originalimage"]["source"].split("?")[0].split("/")[-1])
+      time.sleep(2)
+      curl(d["originalimage"]["source"].split("?")[0], f"{OUT}/{k}_raw")
+      im = Image.open(f"{OUT}/{k}_raw").convert("RGB"); im.thumbnail((1400,1400)); im.save(f"{OUT}/{k}.jpg", quality=90)
+      os.remove(f"{OUT}/{k}_raw")
+      time.sleep(2)
+      m = json.loads(curl("https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&iiprop=extmetadata&format=json&titles=File:"+urllib.parse.quote(fname)))
+      em = list(m["query"]["pages"].values())[0]["imageinfo"][0]["extmetadata"]
+      strip = lambda s: re.sub(r"<[^>]+>", "", s or "").strip()
+      credits[k] = {"nom": d["title"], "fichier": fname, "auteur": strip(em.get("Artist",{}).get("value")),
+                    "licence": strip(em.get("LicenseShortName",{}).get("value"))}
+      print(k, credits[k]); save(); time.sleep(2)
+  except Exception as e:
+    print("ECHEC", k, e)
 json.dump(credits, open(OUT+"/credits.json","w"), ensure_ascii=False, indent=1)
