@@ -14,7 +14,7 @@ def curl(u, out=None):
         r = subprocess.run(a+[u], capture_output=True)
         body, code = (r.stdout[:-3], r.stdout[-3:].decode()) if not out else (b"", r.stdout.decode()[-3:])
         if code == "200": return body
-        time.sleep(4*(i+1))
+        time.sleep(20*(i+1))
     raise RuntimeError(u+" "+code)
 credits = json.load(open(OUT+"/credits.json")) if os.path.exists(OUT+"/credits.json") else {}
 def save(): json.dump(credits, open(OUT+"/credits.json","w"), ensure_ascii=False, indent=1)

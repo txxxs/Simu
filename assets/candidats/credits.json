@@ -16,5 +16,17 @@
   "fichier": "Roussel_Fabien_1.jpg",
   "auteur": "Zouhair NAKARA",
   "licence": "CC BY-SA 4.0"
+ },
+ "philippe": {
+  "nom": "Édouard Philippe",
+  "fichier": "Edouard_Philippe_3x4_crop.jpg",
+  "auteur": "Wasasaq8",
+  "licence": "CC0"
+ },
+ "lisnard": {
+  "nom": "David Lisnard",
+  "fichier": "David_Lisnard_en_2026.jpg",
+  "auteur": "Grégor Sauvagère",
+  "licence": "CC BY-SA 4.0"
  }
 }
