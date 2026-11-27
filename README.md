@@ -15,7 +15,10 @@ Test politique en **HTML/CSS/JS pur** (aucun build, aucune dépendance) — inte
 python3 -m http.server 8000   # puis ouvrir http://localhost:8000
 ```
 
-Déployable tel quel sur GitHub Pages, Vercel ou Netlify (dossier racine).
+## Mettre en ligne
+Site 100 % statique, déployable tel quel (dossier racine) :
+- **GitHub Pages** : le workflow `.github/workflows/pages.yml` déploie à chaque push sur `main`. Une fois : *Settings → Pages → Source : GitHub Actions*.
+- **Vercel / Netlify** : importer le dépôt, aucun build (« Framework : Other », répertoire de sortie : racine).
 
 ## Structure
 

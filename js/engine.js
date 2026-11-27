@@ -63,13 +63,15 @@
   /** Axes triés du plus tranché au plus nuancé : [{i, dev}] */
   const byStrength = vec => vec.map((v, i) => ({ i, dev: Math.abs(v - 50) })).sort((a, b) => b.dev - a.dev);
 
-  function encode(country, mode, answers) { return `${country}.${CODE[mode]}.` + answers.map(a => a == null ? '-' : a).join(''); }
+  // Format de lien compatible avec les pages publiées : lettres, chiffres et tirets uniquement ("fr-s-0123x4").
+  // Le format historique "fr.s.0123-4" (points, tiret = question passée) reste lu.
+  function encode(country, mode, answers) { return `${country}-${CODE[mode]}-` + answers.map(a => a == null ? 'x' : a).join(''); }
   function decode(str) {
-    const m = /^([a-z]{2})\.([sfd])\.([0-4-]+)$/.exec(str || '');
+    const m = /^([a-z]{2})[.-]([sfd])[.-]([0-4x-]+)$/.exec(str || '');
     if (!m || !root.COUNTRIES[m[1]]) return null;
     const mode = DECODE[m[2]], list = questionList(m[1], mode);
     if (m[3].length !== list.length) return null;
-    return { country: m[1], mode, answers: [...m[3]].map(c => c === '-' ? null : +c) };
+    return { country: m[1], mode, answers: [...m[3]].map(c => c === '-' || c === 'x' ? null : +c) };
   }
 
   const api = { questionList, scores, rank, leftRight, lrLevel, intensity, byStrength, encode, decode };

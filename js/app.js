@@ -35,6 +35,11 @@
   }
 
   /* ---------- Navigation ---------- */
+  /** Met à jour le hash (sans recharger) ; tolère les environnements où l'API history est restreinte. */
+  function setHash(h) {
+    try { history.replaceState(null, '', h ? '#' + h : location.pathname + location.search); }
+    catch (e) { try { location.hash = h; } catch (_) {} }
+  }
   function show(id) { $$('.view').forEach(v => v.classList.toggle('active', v.id === id)); window.scrollTo({ top: 0 }); }
   function fillCountries() {
     const keys = Object.keys(COUNTRIES), sel = $('#country');
@@ -47,7 +52,7 @@
     state.list = Engine.questionList(state.country, state.mode);
     state.answers = new Array(state.list.length).fill(null);
     state.idx = 0; state.busy = false; state.pending = null; state.prio = []; state.showAll = false; state.cmp = 0;
-    history.replaceState(null, '', location.pathname + location.search);
+    setHash('');
     show('quiz'); renderQuestion(1);
   }
   function renderAnswers() {
@@ -94,7 +99,7 @@
     state.busy = true; await slide(-1, () => { state.idx--; renderQuestion(-1); }); state.busy = false;
   }
   async function finish() {
-    history.replaceState(null, '', '#r=' + Engine.encode(state.country, state.mode, state.answers));
+    setHash('r-' + Engine.encode(state.country, state.mode, state.answers));
     show('calc');
     const ic = $$('#calcIcons .bico'); ic.forEach(e => e.classList.remove('on'));
     $('#calc').classList.remove('run'); void $('#calc').offsetWidth; $('#calc').classList.add('run');
@@ -269,13 +274,16 @@
       lang: L, vec, top: fam.item, title: t('hero.badge').split('•')[0].trim(), matchText: t('res.match', { p: fam.sim }),
       lr: { pos, label: t('lr.' + Engine.lrLevel(pos)), left: t('lr.l'), right: t('lr.r') },
       facts: data.filter(d => d.fact).map(d => { const r = reliable(tops[d.id])[0]; return { label: t(d.fact), name: r.item.name[L], sim: r.sim, hue: r.item.hue }; }),
-      footer: location.host ? location.host + location.pathname : 'simu',
+      footer: t('share.footer'),
     });
-    canvas.toBlob(b => {
-      const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = t('dl.name');
-      document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-    });
+    // Affichée dans la page : un téléchargement déclenché par script est bloqué dans certains hébergements
+    // (pages publiées) ; clic droit / appui long enregistre l'image, le lien « Télécharger » marche ailleurs.
+    const url = canvas.toDataURL('image/png');
+    $('#shareImg').src = url;
+    const dl = $('#shareDl'); dl.href = url; dl.download = t('dl.name');
+    $('#shareModal').hidden = false; $('#shareClose').focus();
   }
+  function closeModal() { $('#shareModal').hidden = true; }
   function copyLink() {
     const url = location.href, done = () => toast(t('share.copied'));
     const fallback = () => { const ta = document.createElement('textarea'); ta.value = url; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); done(); } catch (e) {} ta.remove(); };
@@ -301,11 +309,28 @@
   $('#backBtn').addEventListener('click', prev);
   $('#skipBtn').addEventListener('click', () => answer(null));
   $('#quitBtn').addEventListener('click', () => show('home'));
-  $('#retakeBtn').addEventListener('click', () => { history.replaceState(null, '', location.pathname); show('home'); });
+  $('#retakeBtn').addEventListener('click', () => { setHash(''); show('home'); });
   $('#imgBtn').addEventListener('click', downloadImage);
+  $('#shareClose').addEventListener('click', closeModal);
+  // Hébergement « page publiée » : le lien de téléchargement direct est bloqué, on passe par sa capacité `downloads`.
+  // Ailleurs (hébergement classique), window.claude n'existe pas et le lien <a download> fonctionne normalement.
+  $('#shareDl').addEventListener('click', async e => {
+    if (!(window.claude && window.claude.use)) return;
+    e.preventDefault();
+    try {
+      const dl = await window.claude.use('downloads');
+      if (!dl) { toast(t('share.modal.h')); return; }
+      const bin = atob($('#shareImg').src.split(',')[1]), bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      const blob = new Blob([bytes], { type: 'image/png' });
+      await dl.save({ filename: t('dl.name'), data: blob });
+    } catch (err) { if (!err || err.code !== 'declined') toast(t('share.modal.h')); }
+  });
+  $('#shareModal').addEventListener('click', e => { if (e.target.id === 'shareModal') closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#shareModal').hidden) closeModal(); });
   $('#linkBtn').addEventListener('click', copyLink);
   $('#moreBtn').addEventListener('click', () => { state.showAll = !state.showAll; renderMatch(); });
-  $('#brand').addEventListener('click', e => { e.preventDefault(); history.replaceState(null, '', location.pathname); show('home'); });
+  $('#brand').addEventListener('click', e => { e.preventDefault(); setHash(''); show('home'); });
   document.addEventListener('keydown', e => {
     if (!$('#quiz').classList.contains('active')) return;
     if (e.key >= '1' && e.key <= '5') answer(+e.key - 1);
@@ -314,7 +339,7 @@
 
   /* ---------- Init ---------- */
   function loadFromHash() {
-    const m = /^#r=(.+)$/.exec(location.hash), d = m && Engine.decode(m[1]);
+    const m = /^#r[=-](.+)$/.exec(location.hash), d = m && Engine.decode(m[1]);
     if (!d) return false;
     Object.assign(state, { country: d.country, mode: d.mode, answers: d.answers, list: Engine.questionList(d.country, d.mode) });
     show('results'); renderResults(true); return true;
