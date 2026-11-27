@@ -46,6 +46,10 @@
             <span class="ui" data-icon="layers" data-hue="265"></span>
             <span class="mt"><b data-i18n="mode.full"></b><small data-i18n="mode.full.d"></small></span>
           </button>
+          <button class="mode" data-mode="deep" aria-pressed="false">
+            <span class="ui" data-icon="eur" data-hue="190"></span>
+            <span class="mt"><b data-i18n="mode.deep"></b><small data-i18n="mode.deep.d"></small></span>
+          </button>
         </div>
         <button class="cta st" style="--i:4" id="startBtn"><span data-i18n="start"></span><span class="ui" data-icon="next"></span></button>
         <p class="priv st" style="--i:5"><span class="ui" data-icon="lock"></span><span data-i18n="priv"></span></p>
@@ -89,27 +93,36 @@
 
       <article class="card reveal hero-res" id="heroRes"></article>
 
+      <article class="card reveal" id="sumCard"></article>
+
       <div class="grid2">
         <article class="card reveal">
           <h3 data-i18n="res.compass"></h3>
+          <div class="tabs small" id="compassTabs"></div>
           <div id="compass" class="viz"></div>
         </article>
         <article class="card reveal">
           <h3 data-i18n="res.radar"></h3>
           <div id="radar" class="viz"></div>
+          <div class="legend" id="radarLegend"></div>
         </article>
       </div>
+
+      <article class="card reveal" id="matchCard">
+        <h3 data-i18n="match.title"></h3>
+        <div class="tabs" id="matchTabs"></div>
+        <div class="prio">
+          <b data-i18n="prio.title"></b><small data-i18n="prio.sub"></small>
+          <div class="chips" id="prioChips"></div>
+        </div>
+        <div id="matchList"></div>
+        <button class="ghost center" id="moreBtn"></button>
+        <p class="note" data-i18n="match.note"></p>
+      </article>
 
       <article class="card reveal" id="axesCard">
         <h3 data-i18n="res.axes"></h3>
         <div id="axesBars"></div>
-      </article>
-
-      <article class="card reveal">
-        <h3 data-i18n="res.ranking"></h3>
-        <div id="ranking"></div>
-        <button class="ghost center" id="moreBtn"></button>
-        <p class="note" data-i18n="res.ranking.note"></p>
       </article>
 
       <div class="actions reveal">
@@ -126,6 +139,7 @@
 
   <script src="data/axes.js"></script>
   <script src="data/fr.js"></script>
+  <script src="data/world.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/icons.js"></script>
   <script src="js/engine.js"></script>

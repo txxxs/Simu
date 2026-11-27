@@ -76,5 +76,9 @@
       <path d="M24 4v5M24 39v5M4 24h5M39 24h5" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".7"/>
       <g class="needle"><path d="M31 17l-5 10-10 5 5-10z" fill="#fff"/><circle cx="24" cy="24" r="2.400" fill="#7c3aed"/></g></svg>`;
   }
-  window.Icons = { svg, nested, image, badge, logo, has: n => !!I[n] };
+  /** Pastille avec texte (sigle, code pays, initiales). */
+  function text(label, hue, size = 40) {
+    return `<span class="bico tx" style="--h:${hue};--z:${size}px">${label}</span>`;
+  }
+  window.Icons = { svg, nested, image, badge, text, logo, has: n => !!I[n] };
 })();

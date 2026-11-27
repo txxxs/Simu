@@ -76,6 +76,44 @@
     ['tech', +1, "Les biotechnologies (OGM, édition génétique) devraient être encouragées.", "Biotechnologies (GMOs, gene editing) should be encouraged.", 0],
     ['tech', -1, "Le numérique et les réseaux sociaux ont fait globalement plus de mal que de bien.", "Digital technology and social media have done more harm than good overall.", 0],
     ['tech', +1, "L'exploration spatiale mérite des investissements publics importants.", "Space exploration deserves significant public investment.", 0],
+
+    /* ===== Niveau 3 : test approfondi (6e valeur = 3) ===== */
+    ['eco', +1, "La concurrence entre entreprises profite davantage aux consommateurs que la régulation de l'État.", "Competition between firms benefits consumers more than state regulation does.", 0, 3],
+    ['eco', -1, "L'État devrait contrôler les prix des produits de première nécessité (énergie, alimentation).", "The state should control the prices of essentials (energy, food).", 0, 3],
+    ['eco', +1, "Les syndicats ont trop de pouvoir dans l'économie.", "Trade unions have too much power in the economy.", 0, 3],
+    ['soc', +1, "Chacun devrait pouvoir choisir librement son mode de vie sans jugement moral de la société.", "Everyone should be free to choose their way of life without moral judgement from society.", 0, 3],
+    ['soc', -1, "La religion et les traditions sont indispensables pour transmettre des valeurs morales solides.", "Religion and traditions are essential to pass on strong moral values.", 0, 3],
+    ['soc', +1, "La gestation pour autrui (GPA) devrait être légalisée et encadrée.", "Surrogacy should be legalised and regulated.", 0, 3],
+    ['lib', -1, "Il est acceptable de limiter certaines libertés individuelles pour protéger la sécurité nationale.", "It is acceptable to limit some individual freedoms to protect national security.", 0, 3],
+    ['lib', +1, "La liberté d'expression doit être protégée même pour des opinions choquantes ou offensantes.", "Free speech must be protected even for shocking or offensive opinions.", 0, 3],
+    ['lib', -1, "Les forces de l'ordre devraient disposer de pouvoirs élargis, même au détriment de certaines garanties.", "Law enforcement should have expanded powers, even at the expense of some safeguards.", 0, 3],
+    ['nat', +1, "Les institutions internationales (ONU, OMC, CPI) devraient pouvoir imposer leurs décisions aux États.", "International institutions (UN, WTO, ICC) should be able to bind states.", 0, 3],
+    ['nat', -1, "La préférence nationale devrait s'appliquer à l'emploi et au logement.", "National preference should apply to jobs and housing.", 0, 3],
+    ['nat', +1, "Un citoyen a autant de devoirs envers l'humanité qu'envers son propre pays.", "A citizen has as many duties to humanity as to their own country.", 0, 3],
+    ['eur', +1, "La France devrait accepter de transférer davantage de souveraineté budgétaire à l'UE.", "France should accept transferring more budgetary sovereignty to the EU.", 0, 3],
+    ['eur', -1, "L'élargissement de l'UE à de nouveaux pays est une erreur.", "Enlarging the EU to new countries is a mistake.", 0, 3],
+    ['eur', +1, "Les élections européennes devraient se faire sur des listes transnationales.", "European elections should be held on transnational lists.", 0, 3],
+    ['env', +1, "Le prix de l'énergie devrait refléter son coût climatique, même s'il augmente fortement.", "Energy prices should reflect their climate cost, even if they rise sharply.", 0, 3],
+    ['env', -1, "Il faut continuer à exploiter les énergies fossiles tant que c'est rentable.", "We should keep exploiting fossil fuels as long as it is profitable.", 0, 3],
+    ['env', +1, "Il faut réduire fortement la consommation de viande pour protéger le climat.", "Meat consumption must be sharply reduced to protect the climate.", 0, 3],
+    ['imm', +1, "Les demandeurs d'asile devraient avoir le droit de travailler dès leur arrivée.", "Asylum seekers should have the right to work as soon as they arrive.", 0, 3],
+    ['imm', -1, "Les expulsions d'étrangers en situation irrégulière devraient être systématiques.", "Deportations of irregular migrants should be systematic.", 0, 3],
+    ['imm', +1, "Un pays n'a pas le droit de refuser l'entrée à des personnes qui fuient la misère.", "A country has no right to turn away people fleeing poverty.", 0, 3],
+    ['dem', +1, "Les élus devraient pouvoir être révoqués par les citoyens en cours de mandat.", "Elected officials should be recallable by citizens during their term.", 0, 3],
+    ['dem', -1, "Tout le monde n'est pas assez informé pour bien voter : le suffrage universel a ses limites.", "Not everyone is informed enough to vote well: universal suffrage has its limits.", 0, 3],
+    ['dem', +1, "Une partie des budgets publics devrait être décidée par des votes citoyens.", "Part of public budgets should be decided by citizen votes.", 0, 3],
+    ['laic', -1, "Les aménagements religieux (menus, horaires) n'ont pas leur place dans le service public.", "Religious accommodations (menus, schedules) have no place in the public service.", 0, 3],
+    ['laic', +1, "Les jours fériés devraient refléter la diversité religieuse du pays.", "Public holidays should reflect the country's religious diversity.", 0, 3],
+    ['laic', -1, "L'enseignement religieux ne devrait recevoir aucun financement public.", "Religious schooling should receive no public funding.", 0, 3],
+    ['jus', +1, "La prison devrait avant tout viser la réinsertion des détenus.", "Prisons should above all aim at rehabilitating inmates.", 0, 3],
+    ['jus', -1, "Les peines planchers (minimum obligatoire) devraient être généralisées.", "Mandatory minimum sentences should be widespread.", 0, 3],
+    ['jus', +1, "Dépénaliser l'usage des drogues réduirait la délinquance.", "Decriminalising drug use would reduce crime.", 0, 3],
+    ['fisc', -1, "L'héritage devrait être beaucoup plus taxé pour réduire les inégalités.", "Inheritance should be taxed much more to reduce inequality.", 0, 3],
+    ['fisc', +1, "Les aides sociales encouragent parfois l'inactivité.", "Welfare benefits sometimes discourage work.", 0, 3],
+    ['fisc', -1, "La santé et l'éducation devraient être entièrement gratuites, financées par l'impôt.", "Health and education should be entirely free, funded by taxes.", 0, 3],
+    ['tech', +1, "Les voitures autonomes et la robotisation amélioreront globalement nos vies.", "Self-driving cars and robotics will improve our lives overall.", 0, 3],
+    ['tech', -1, "La collecte de données personnelles doit être strictement limitée, même si cela freine l'innovation.", "Personal data collection must be strictly limited, even if it slows innovation.", 0, 3],
+    ['tech', +1, "Prolonger la vie humaine grâce à la médecine de pointe est un objectif légitime.", "Extending human life through cutting-edge medicine is a legitimate goal.", 0, 3],
   ];
 
   // Vecteurs : [eco, soc, lib, nat, eur, env, imm, dem, laic, jus, fisc, tech]  (0 = pôle A, 100 = pôle B)
@@ -115,10 +153,30 @@
       [10, 95, 98, 95, 70, 80, 98, 98, 40, 95, 30, 40]],
   ];
 
+  // Partis français : [sigle, teinte, nom, famille FR, famille EN, vecteur]
+  // ESTIMATIONS indicatives d'après programmes et votes, à relire / affiner avant publication.
+  const PARTIES = [
+    ['LFI', 5,   'La France insoumise',     'Gauche radicale', 'Radical left',       [10, 85, 65, 40, 30, 88, 85, 90, 45, 85, 5, 35]],
+    ['PCF', 355, 'Parti communiste français', 'Gauche radicale', 'Radical left',     [8, 80, 60, 45, 40, 70, 75, 70, 40, 75, 5, 50]],
+    ['LO',  350, 'Extrême gauche (LO, NPA)', 'Extrême gauche', 'Far left',           [3, 82, 70, 90, 35, 55, 90, 60, 45, 80, 3, 50]],
+    ['PS',  335, 'Parti socialiste',        'Social-démocratie', 'Social democracy', [30, 78, 60, 65, 78, 62, 68, 50, 55, 68, 28, 55]],
+    ['LÉ',  140, 'Les Écologistes',         'Écologie politique', 'Green politics',  [28, 88, 72, 70, 80, 95, 82, 78, 62, 82, 22, 25]],
+    ['VOLT', 275, 'Volt France',            'Fédéralisme progressiste', 'Progressive federalism', [55, 85, 72, 95, 98, 80, 80, 70, 70, 70, 40, 65]],
+    ['RE',  45,  'Renaissance',             'Centre libéral', 'Liberal centre',      [70, 68, 52, 75, 90, 52, 55, 35, 45, 45, 65, 82]],
+    ['MD',  30,  'MoDem',                   'Centre', 'Centre',                      [58, 65, 55, 75, 92, 55, 58, 45, 50, 55, 55, 65]],
+    ['HOR', 200, 'Horizons',                'Centre droit', 'Centre-right',          [72, 55, 45, 70, 82, 45, 45, 35, 40, 38, 65, 75]],
+    ['UDI', 185, 'UDI',                     'Centre droit', 'Centre-right',          [62, 55, 48, 68, 85, 48, 50, 40, 45, 45, 58, 65]],
+    ['LR',  220, 'Les Républicains',        'Droite conservatrice', 'Conservative right', [68, 28, 35, 40, 55, 35, 28, 40, 30, 25, 72, 65]],
+    ['DLF', 230, 'Debout la France',        'Souverainisme', 'Sovereigntism',        [50, 28, 40, 8, 8, 32, 20, 60, 25, 22, 48, 50]],
+    ['RN',  240, 'Rassemblement national',  'Droite nationale', 'National right',    [42, 28, 28, 8, 12, 28, 10, 70, 22, 12, 55, 50]],
+    ['REC', 260, 'Reconquête',              'Droite identitaire', 'Identitarian right', [58, 8, 15, 6, 6, 28, 3, 50, 25, 8, 62, 45]],
+  ];
+
   window.COUNTRIES.fr = {
-    flag: '🇫🇷',
+    flag: 'FR',
     name: { fr: 'France', en: 'France' },
-    questions: Q.map(q => ({ axis: q[0], dir: q[1], text: { fr: q[2], en: q[3] }, short: !!q[4] })),
+    parties: PARTIES.map(p => ({ code: p[0], hue: p[1], name: { fr: p[2], en: p[2] }, sub: { fr: p[3], en: p[4] }, v: p[5] })),
+    questions: Q.map(q => ({ axis: q[0], dir: q[1], text: { fr: q[2], en: q[3] }, lvl: q[4] ? 1 : (q[5] || 2) })),
     profiles: P.map(p => ({
       id: p[0], hue: p[1],
       name: { fr: p[2], en: p[3] }, examples: { fr: p[4], en: p[5] }, desc: { fr: p[6], en: p[7] },

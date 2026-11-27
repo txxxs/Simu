@@ -1,14 +1,22 @@
 /* Moteur de calcul : pur, sans DOM (testable avec Node). */
 (function (root) {
   const AX = () => root.AXES;
+  // Ordre d'alternance des thèmes (évite d'enchaîner 5 questions sur le même sujet)
+  const ORDER = ['eco', 'soc', 'imm', 'env', 'lib', 'nat', 'fisc', 'laic', 'eur', 'jus', 'dem', 'tech'];
+  const LEVEL = { short: 1, full: 2, deep: 3 };
+  const CODE = { short: 's', full: 'f', deep: 'd' }, DECODE = { s: 'short', f: 'full', d: 'deep' };
 
-  /** Liste des questions selon le mode ('short' | 'full'). */
+  /** Liste des questions selon le mode ('short' | 'full' | 'deep'), alternées entre thèmes. */
   function questionList(country, mode) {
-    const qs = root.COUNTRIES[country].questions;
-    return mode === 'short' ? qs.filter(q => q.short) : qs.slice();
+    const max = LEVEL[mode] || 2, cnt = {};
+    return root.COUNTRIES[country].questions
+      .filter(q => q.lvl <= max)
+      .map(q => ({ q, k: (cnt[q.axis] = (cnt[q.axis] || 0) + 1) }))
+      .sort((a, b) => a.k - b.k || ORDER.indexOf(a.q.axis) - ORDER.indexOf(b.q.axis))
+      .map(x => x.q);
   }
 
-  /** answers[i] : 0..4 (désaccord → accord) ou null (passée). Retourne une valeur 0..100 par axe (50 = neutre). */
+  /** answers[i] : 0..4 (désaccord → accord) ou null. Valeur 0..100 par axe (50 = neutre). */
   function scores(list, answers) {
     const sum = {}, cnt = {};
     list.forEach((q, i) => {
@@ -20,27 +28,44 @@
     return AX().map(ax => cnt[ax.id] ? 50 + 50 * sum[ax.id] / (2 * cnt[ax.id]) : 50);
   }
 
-  /** Proximité 0..100 avec chaque profil (distance quadratique moyenne). */
-  function ranking(country, vec) {
-    return root.COUNTRIES[country].profiles.map(p => {
-      const d = Math.sqrt(p.v.reduce((s, x, i) => s + (x - vec[i]) ** 2, 0) / p.v.length);
-      return { profile: p, sim: Math.max(0, Math.round(100 - d * 1.5)) };
+  /** Classe des éléments {v:[12]} par proximité avec vec. weights : poids par axe (priorités). */
+  function rank(items, vec, weights) {
+    const w = weights || vec.map(() => 1), W = w.reduce((s, x) => s + x, 0);
+    return items.map(item => {
+      const diffs = item.v.map((x, i) => Math.abs(x - vec[i]));
+      const d = Math.sqrt(diffs.reduce((s, x, i) => s + w[i] * x * x, 0) / W);
+      const idx = diffs.map((x, i) => i).sort((a, b) => diffs[a] - diffs[b]);
+      return {
+        item, sim: Math.max(0, Math.round(100 - d * 1.4)),
+        close: idx.slice(0, 2).filter(i => diffs[i] <= 18),
+        far: idx.slice(-2).reverse().filter(i => diffs[i] >= 30),
+      };
     }).sort((a, b) => b.sim - a.sim);
   }
 
-  /** Encodage dans l'URL : "fr.s.0123-4…" */
-  function encode(country, mode, answers) {
-    return `${country}.${mode === 'short' ? 's' : 'f'}.` + answers.map(a => a == null ? '-' : a).join('');
+  // Position gauche-droite : [axe, gauche = pôle A ?, poids]
+  const LR = [['eco', true, 1.1], ['fisc', true, 1.1], ['soc', false, 1.3], ['imm', false, 1.3], ['jus', false, .8], ['env', false, .6], ['nat', false, .5]];
+  /** 0 = extrême gauche … 100 = extrême droite */
+  function leftRight(vec) {
+    const ids = AX().map(a => a.id); let s = 0, W = 0;
+    LR.forEach(([id, leftIsA, w]) => { const v = vec[ids.indexOf(id)]; s += w * (leftIsA ? 100 - v : v); W += w; });
+    return Math.round(100 - s / W);
   }
+  const lrLevel = p => p < 10 ? 0 : p < 26 ? 1 : p < 42 ? 2 : p < 58 ? 3 : p < 71 ? 4 : p < 86 ? 5 : 6;
+  /** Intensité des convictions 0..100 */
+  const intensity = vec => Math.round(vec.reduce((s, v) => s + Math.abs(v - 50), 0) / vec.length * 2);
+  /** Axes triés du plus tranché au plus nuancé : [{i, dev}] */
+  const byStrength = vec => vec.map((v, i) => ({ i, dev: Math.abs(v - 50) })).sort((a, b) => b.dev - a.dev);
+
+  function encode(country, mode, answers) { return `${country}.${CODE[mode]}.` + answers.map(a => a == null ? '-' : a).join(''); }
   function decode(str) {
-    const m = /^([a-z]{2})\.([sf])\.([0-4-]+)$/.exec(str || '');
+    const m = /^([a-z]{2})\.([sfd])\.([0-4-]+)$/.exec(str || '');
     if (!m || !root.COUNTRIES[m[1]]) return null;
-    const mode = m[2] === 's' ? 'short' : 'full';
-    const list = questionList(m[1], mode);
+    const mode = DECODE[m[2]], list = questionList(m[1], mode);
     if (m[3].length !== list.length) return null;
     return { country: m[1], mode, answers: [...m[3]].map(c => c === '-' ? null : +c) };
   }
 
-  const api = { questionList, scores, ranking, encode, decode };
+  const api = { questionList, scores, rank, leftRight, lrLevel, intensity, byStrength, encode, decode };
   if (typeof module !== 'undefined') module.exports = api; else root.Engine = api;
 })(typeof window !== 'undefined' ? window : globalThis);
