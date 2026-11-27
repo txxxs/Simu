@@ -1,6 +1,6 @@
 window.I18N = {
   fr: {
-    'brand': 'Simu',
+    'brand': 'Azimut',
     'hero.badge': 'Test politique • 12 axes',
     'hero.title1': 'Où te situes‑tu', 'hero.title2': 'vraiment ?', 'hero.title3': 'sur 12 axes',
     'hero.eyebrow': 'Test politique · Présidentielle 2027', 'res.eyebrow': 'Ton profil', 'about.eyebrow': 'Transparence',
@@ -52,14 +52,14 @@ window.I18N = {
     'conf.t': 'Fiabilité de l\'estimation', 'conf.1': 'faible (positions peu documentées)', 'conf.2': 'moyenne', 'conf.3': 'élevée',
     'match.note': "Les positions des partis, pays et personnalités sont des estimations indicatives (programmes, votes, modèles dominants), pas des positions officielles.",
     'res.more': 'Voir tout', 'res.less': 'Réduire',
-    'share.img': "Image de partage", 'share.modal.t': 'Ton image de partage', 'share.modal.h': "Clic droit (ou appui long sur mobile) sur l'image pour l'enregistrer.", 'share.dl': 'Télécharger', 'share.footer': 'Simu — test politique', 'share.link': 'Copier le lien', 'share.copied': 'Lien copié !',
+    'share.img': "Image de partage", 'share.modal.t': 'Ton image de partage', 'share.modal.h': "Clic droit (ou appui long sur mobile) sur l'image pour l'enregistrer.", 'share.dl': 'Télécharger', 'share.footer': 'Azimut — test politique', 'share.link': 'Copier le lien', 'share.copied': 'Lien copié !',
     'retake': 'Refaire le test',
     'disc': "Ce test est un outil de réflexion et de divertissement. Il simplifie la réalité politique et ne remplace pas une information approfondie.",
     'neutral': 'Neutre', 'leaning': '{p}% {pole}',
-    'footer': 'Simu — projet indépendant', 'dl.name': 'simu-resultat.png',
+    'footer': 'Azimut — projet indépendant', 'dl.name': 'azimut-resultat.png',
   },
   en: {
-    'brand': 'Simu',
+    'brand': 'Azimut',
     'hero.badge': 'Political test • 12 axes',
     'hero.title1': 'Where do you', 'hero.title2': 'really stand', 'hero.title3': 'on 12 axes?',
     'hero.eyebrow': 'Political test · 2027 election', 'res.eyebrow': 'Your profile', 'about.eyebrow': 'Transparency',
@@ -111,10 +111,10 @@ window.I18N = {
     'conf.t': 'Estimate reliability', 'conf.1': 'low (little documented)', 'conf.2': 'medium', 'conf.3': 'high',
     'match.note': 'Positions of parties, countries and figures are indicative estimates (programmes, votes, dominant models), not official positions.',
     'res.more': 'Show all', 'res.less': 'Show less',
-    'share.img': 'Share image', 'share.modal.t': 'Your share image', 'share.modal.h': 'Right-click (or long-press on mobile) the image to save it.', 'share.dl': 'Download', 'share.footer': 'Simu — political test', 'share.link': 'Copy link', 'share.copied': 'Link copied!',
+    'share.img': 'Share image', 'share.modal.t': 'Your share image', 'share.modal.h': 'Right-click (or long-press on mobile) the image to save it.', 'share.dl': 'Download', 'share.footer': 'Azimut — political test', 'share.link': 'Copy link', 'share.copied': 'Link copied!',
     'retake': 'Retake the test',
     'disc': 'This test is a tool for reflection and entertainment. It simplifies political reality and is no substitute for in-depth information.',
     'neutral': 'Neutral', 'leaning': '{p}% {pole}',
-    'footer': 'Simu — independent project', 'dl.name': 'simu-result.png',
+    'footer': 'Azimut — independent project', 'dl.name': 'azimut-result.png',
   },
 };

@@ -1,4 +1,4 @@
-/* Simu — identité cartographique : bleu nuit, filets fins, repères d'angle, petites capitales techniques */
+/* Azimut — identité cartographique : bleu nuit, filets fins, repères d'angle, petites capitales techniques */
 :root{
   --bg:#0a1b2e; --surface:#0f2640; --surface2:#143251; --line:#25476a; --line2:#3a6590; --grid:rgba(56,217,192,.05);
   --txt:#e8f0f7; --mut:#8fa6bd; --accent:#ff7849; --aqua:#38d9c0; --warn:#ffd166; --ok:#58e0a8; --no:#ff8a9a; --link:#38d9c0;
@@ -301,3 +301,9 @@ select option{color:#000}
 .dial .needle{transform-origin:160px 160px}
 .dial .lab{animation:fadeIn .7s var(--ease) both}
 a.cta{text-decoration:none}
+@media (max-width:480px){
+  .top{gap:8px}
+  .wordmark{font-size:1rem;letter-spacing:.14em}
+  .edition{display:none}
+  .tools{gap:5px}
+}

@@ -1,4 +1,4 @@
-# 🧭 Simu — Test politique
+# 🧭 Azimut — Test politique
 
 Test politique en **HTML/CSS/JS pur** (aucun build, aucune dépendance) — interface **FR / EN**.
 

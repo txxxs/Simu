@@ -23,12 +23,12 @@
     if ($('#quiz').classList.contains('active')) renderQuestion();
     if ($('#results').classList.contains('active')) renderResults(false);
   }
-  function setLang(l) { state.lang = l; LS.set('simu.lang', l); applyLang(); }
+  function setLang(l) { state.lang = l; LS.set('azimut.lang', l); applyLang(); }
 
   /* Thème (violet / clair) et taille du texte : préférences gardées dans le navigateur */
   const FS = [1, 1.12, 1.25];
   function applyPrefs() {
-    const th = LS.get('simu.theme'), fs = +LS.get('simu.fs') || 0, root = document.documentElement;
+    const th = LS.get('azimut.theme'), fs = +LS.get('azimut.fs') || 0, root = document.documentElement;
     if (th) root.dataset.theme = th; else root.removeAttribute('data-theme');
     root.style.setProperty('--fs', FS[fs] || 1);
   }
@@ -58,14 +58,14 @@
   /** « Résultats » n'est cliquable que s'il y a un résultat (en mémoire ou gardé dans le navigateur). */
   function updateNav() {
     const b = $('.nav [data-nav="results"]');
-    if (b) b.disabled = !(state.answers.length && state.list.length) && !LS.get('simu.last');
+    if (b) b.disabled = !(state.answers.length && state.list.length) && !LS.get('azimut.last');
   }
   function goNav(n) {
     if (n === 'about') return show('about');
     if (n === 'results') {
       if ($('#results').classList.contains('active')) return;
       if (!(state.answers.length && state.list.length)) {
-        const d = Engine.decode(LS.get('simu.last') || '');
+        const d = Engine.decode(LS.get('azimut.last') || '');
         if (!d) return;
         Object.assign(state, { country: d.country, mode: d.mode, answers: d.answers, list: Engine.questionList(d.country, d.mode) });
       }
@@ -133,7 +133,7 @@
   }
   async function finish() {
     const enc = Engine.encode(state.country, state.mode, state.answers);
-    LS.set('simu.last', enc);
+    LS.set('azimut.last', enc);
     setHash('r-' + enc);
     show('calc');
     const ic = $$('#calcIcons .bico'); ic.forEach(e => e.classList.remove('on'));
@@ -329,8 +329,8 @@
   document.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     if (b.id === 'langBtn') setLang(state.lang === 'fr' ? 'en' : 'fr');
-    else if (b.id === 'fsBtn') { LS.set('simu.fs', ((+LS.get('simu.fs') || 0) + 1) % FS.length); applyPrefs(); }
-    else if (b.id === 'themeBtn') { LS.set('simu.theme', LS.get('simu.theme') === 'light' ? '' : 'light'); applyPrefs(); }
+    else if (b.id === 'fsBtn') { LS.set('azimut.fs', ((+LS.get('azimut.fs') || 0) + 1) % FS.length); applyPrefs(); }
+    else if (b.id === 'themeBtn') { LS.set('azimut.theme', LS.get('azimut.theme') === 'light' ? '' : 'light'); applyPrefs(); }
     else if (b.dataset.nav) goNav(b.dataset.nav);
     else if (b.classList.contains('mode')) { state.mode = b.dataset.mode; $$('.mode').forEach(m => m.setAttribute('aria-pressed', m === b)); }
     else if (b.classList.contains('ans')) answer(+b.dataset.v);
@@ -382,7 +382,7 @@
     Object.assign(state, { country: d.country, mode: d.mode, answers: d.answers, list: Engine.questionList(d.country, d.mode) });
     show('results'); renderResults(true); return true;
   }
-  const saved = LS.get('simu.lang');
+  const saved = LS.get('azimut.lang');
   state.lang = saved && I18N[saved] ? saved : ((navigator.language || 'fr').toLowerCase().startsWith('en') ? 'en' : 'fr');
   applyPrefs(); initIcons(); applyLang(); loadFromHash(); updateNav();
   window.addEventListener('hashchange', () => { if (!loadFromHash() && !location.hash) show('home'); });

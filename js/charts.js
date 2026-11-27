@@ -103,7 +103,7 @@
     box(64, 48, 56, 56, 12, SURF, LINE2);
     c.strokeStyle = AQ; c.lineWidth = 4; c.beginPath(); c.arc(92, 76, 15, 0, TAU); c.stroke();
     c.fillStyle = OR; c.beginPath(); c.moveTo(102, 66); c.lineTo(96, 80); c.lineTo(82, 86); c.lineTo(88, 72); c.closePath(); c.fill();
-    c.textAlign = 'left'; c.fillStyle = TXT; c.font = font(800, 34, DISP); c.fillText('S I M U', 142, 90);
+    c.textAlign = 'left'; c.fillStyle = TXT; c.font = font(800, 34, DISP); c.fillText('A Z I M U T', 142, 90);
     c.font = font(500, 24, MONO); c.fillStyle = OR; c.textAlign = 'right'; c.fillText('2027', W - 64, 88);
 
     // famille
