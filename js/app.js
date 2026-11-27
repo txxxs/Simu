@@ -113,6 +113,8 @@
     D.push({ id: 'families', fact: null, items: C.profiles, badge: (x, z) => Icons.badge(x.id, x.hue, z), sub: x => x.desc });
     return D;
   }
+  /** Pour les en-têtes : écarte les estimations peu fiables (conf 1) tant qu'il en reste de plus solides. */
+  const reliable = list => { const ok = list.filter(r => !r.item.conf || r.item.conf >= 2); return ok.length ? ok : list; };
   const weights = () => IDS.map(id => state.prio.includes(id) ? 2 : 1);
   const axName = i => AXES[i].name[state.lang];
 
@@ -146,7 +148,7 @@
     const fam = tops.families[0], fp = fam.item;
 
     /* Hero : famille + 4 affinités */
-    const facts = data.filter(d => d.fact).map(d => ({ d, r: tops[d.id][0] }));
+    const facts = data.filter(d => d.fact).map(d => ({ d, r: reliable(tops[d.id])[0] }));
     const hero = $('#heroRes');
     hero.style.setProperty('--h', fp.hue);
     hero.innerHTML = `
@@ -196,7 +198,7 @@
     renderCompass(R);
 
     /* Radar : toi vs. 1er parti (ou 1re idéologie) */
-    const vsD = tops.parties || tops.ideologies, vs = vsD[0].item;
+    const vsD = tops.parties || tops.ideologies, vs = reliable(vsD)[0].item;
     $('#radar').innerHTML = Charts.radar(vec, L, vs);
     $('#radarLegend').innerHTML = `<span><i class="lg you"></i>${t('radar.you')}</span><span><i class="lg vs"></i>${vs.name[L]}</span>`;
 
@@ -219,7 +221,7 @@
     const { vec, tops } = R, L = state.lang;
     $('#compassTabs').innerHTML = COMPASSES.map((c, k) => `<button class="tab" data-cmp="${k}" aria-pressed="${k === state.cmp}">${axName(IDS.indexOf(c[0]))} × ${axName(IDS.indexOf(c[1]))}</button>`).join('');
     const [xi, yi] = COMPASSES[state.cmp].map(id => IDS.indexOf(id));
-    const dots = tops.parties ? tops.parties.slice(0, 4).map(r => ({ v: r.item.v, hue: r.item.hue, label: r.item.code })) : [];
+    const dots = tops.parties ? reliable(tops.parties).slice(0, 4).map(r => ({ v: r.item.v, hue: r.item.hue, label: r.item.code })) : [];
     $('#compass').innerHTML = Charts.compass(vec, L, xi, yi, dots) + (dots.length ? `<div class="legend"><span><i class="lg you"></i>${t('radar.you')}</span><span><i class="lg dotp"></i>${t('compass.parties')}</span></div>` : '');
   }
 
@@ -232,10 +234,13 @@
     const d = data.find(x => x.id === state.tab), rank = Engine.rank(d.items, vec, weights());
     const shown = state.showAll ? rank : rank.slice(0, 6);
     const list = (a, label) => a.length ? `<span class="${label === 'close' ? 'ok' : 'no'}">${t('why.' + label)} ${a.map(axName).join(', ')}</span>` : '';
-    $('#matchList').innerHTML = shown.map((r, i) => {
+    const dots = n => `<span class="conf c${n}" title="${t('conf.t')} : ${t('conf.' + n)}" aria-label="${t('conf.t')} : ${t('conf.' + n)}"><i></i><i></i><i></i></span>`;
+    const candLine = x => !x.cand ? '' : `<small class="cand${x.cand.name ? ' on' : ''}">${x.cand.name ? t('cand') + ' <b>' + x.cand.name + '</b> · ' : ''}${x.cand.status[L]}</small>`;
+    const note = d.id === 'parties' ? `<p class="cand-note">${t('cand.note')}</p>` : '';
+    $('#matchList').innerHTML = note + shown.map((r, i) => {
       const x = r.item, sub = d.sub(x);
       return `<div class="rk" style="--h:${x.hue};--k:${i}">
-        <span class="rk-n">${d.badge(x, 40)}<span class="rk-t"><b>${x.name[L]}</b>${sub ? `<small>${sub[L]}</small>` : ''}</span></span>
+        <span class="rk-n">${d.badge(x, 40)}<span class="rk-t"><b>${x.name[L]}${x.conf ? dots(x.conf) : ''}</b>${sub ? `<small>${sub[L]}</small>` : ''}${candLine(x)}</span></span>
         <div class="rk-bar"><i style="width:${r.sim}%"></i></div><b class="rk-p">${r.sim}%</b>
         <div class="rk-why">${list(r.close, 'close')}${list(r.far, 'far')}</div>
       </div>`;
@@ -256,7 +261,7 @@
     await Charts.shareImage(canvas, {
       lang: L, vec, top: fam.item, title: t('hero.badge').split('•')[0].trim(), matchText: t('res.match', { p: fam.sim }),
       lr: { pos, label: t('lr.' + Engine.lrLevel(pos)), left: t('lr.l'), right: t('lr.r') },
-      facts: data.filter(d => d.fact).map(d => { const r = tops[d.id][0]; return { label: t(d.fact), name: r.item.name[L], sim: r.sim, hue: r.item.hue }; }),
+      facts: data.filter(d => d.fact).map(d => { const r = reliable(tops[d.id])[0]; return { label: t(d.fact), name: r.item.name[L], sim: r.sim, hue: r.item.hue }; }),
       footer: location.host ? location.host + location.pathname : 'simu',
     });
     canvas.toBlob(b => {

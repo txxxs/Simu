@@ -22,7 +22,9 @@ Déployable tel quel sur GitHub Pages, Vercel ou Netlify (dossier racine).
 | Fichier | Rôle |
 |---|---|
 | `data/axes.js` | Les 12 axes (communs à tous les pays) |
-| `data/fr.js` | Questions, **partis** et familles politiques de la **France** |
+| `data/fr.js` | Questions, **partis + candidatures 2027** et familles politiques de la **France** |
+| `data/fr-ches.js` | Calibrage CHES généré (vide tant que non calibré) |
+| `tools/ches_calibrate.py` | Calibre les partis sur le jeu CHES |
 | `data/world.js` | **Idéologies**, **pays**, **personnalités** (communs à tous les pays) |
 | `js/engine.js` | Calcul : scores, classement pondéré, gauche–droite, encodage URL (sans DOM) |
 | `js/icons.js` | Jeu d'icônes maison en SVG (aucun emoji système) |
@@ -38,4 +40,4 @@ Déployable tel quel sur GitHub Pages, Vercel ou Netlify (dossier racine).
 Chaque question appartient à un axe et a un sens (`+1` / `-1`). Réponse sur 5 niveaux → score 0–100 par axe (50 = neutre).
 Proximité = `100 − 1,4 × distance quadratique moyenne (pondérée)` entre l'utilisateur et chaque profil.
 
-> ⚠️ Les vecteurs des **partis, pays, idéologies et personnalités** sont des **estimations indicatives** à relire/calibrer avant publication (idéalement sur des sources comme les enquêtes d'experts CHES ou le Manifesto Project).
+> ⚠️ Les vecteurs des **partis, pays, idéologies et personnalités** sont des **estimations**. Pour les partis français, voir [`docs/CALIBRATION.md`](docs/CALIBRATION.md) : liste des candidats 2027 vérifiée (LCP/Wikipédia, 27 nov. 2026), indicateur de fiabilité par parti et outil `tools/ches_calibrate.py` pour calibrer sur l'enquête d'experts CHES.

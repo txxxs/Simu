@@ -298,3 +298,14 @@ select option{color:#000}
 .card{min-width:0}
 .grid2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 @media (max-width:760px){.grid2{grid-template-columns:minmax(0,1fr)}}
+
+/* Candidatures et fiabilité */
+.rk-t b{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rk-t small.cand{margin-top:2px;color:hsl(var(--h) 80% 78%/.85)}
+.rk-t small.cand b{display:inline;color:#fff;font-weight:600}
+.cand-note{font-size:.78rem;line-height:1.5;color:var(--mut);background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:14px;padding:10px 14px;margin-bottom:6px}
+.conf{display:inline-flex;gap:3px;align-items:center;padding:3px 6px;border-radius:99px;background:rgba(255,255,255,.07);cursor:help}
+.conf i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2)}
+.conf.c1 i:nth-child(1){background:#fb923c}
+.conf.c2 i:nth-child(-n+2){background:#fbbf24}
+.conf.c3 i{background:#4ade80}
