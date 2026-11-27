@@ -1,0 +1,28 @@
+/* Axes communs à tous les pays. Valeur 0 = pôle A, 100 = pôle B. */
+window.AXES = [
+  { id: 'eco',  icon: '💶', hue: 265, name: { fr: 'Économie',        en: 'Economy' },
+    a: { fr: 'Étatisme',            en: 'State-led' },          b: { fr: 'Libre marché',        en: 'Free market' } },
+  { id: 'soc',  icon: '🏳️‍🌈', hue: 320, name: { fr: 'Société',         en: 'Society' },
+    a: { fr: 'Conservateur',        en: 'Conservative' },       b: { fr: 'Progressiste',        en: 'Progressive' } },
+  { id: 'lib',  icon: '🗽', hue: 190, name: { fr: 'Autorité',        en: 'Authority' },
+    a: { fr: 'Autoritaire',         en: 'Authoritarian' },      b: { fr: 'Libertaire',          en: 'Libertarian' } },
+  { id: 'nat',  icon: '🏴', hue: 15,  name: { fr: 'Nation',          en: 'Nation' },
+    a: { fr: 'Souverainiste',       en: 'Sovereigntist' },      b: { fr: 'Internationaliste',   en: 'Internationalist' } },
+  { id: 'eur',  icon: '🇪🇺', hue: 220, name: { fr: 'Europe',          en: 'Europe' },
+    a: { fr: 'Eurosceptique',       en: 'Eurosceptic' },        b: { fr: 'Fédéraliste',         en: 'Federalist' } },
+  { id: 'env',  icon: '🌱', hue: 140, name: { fr: 'Écologie',        en: 'Environment' },
+    a: { fr: 'Productivisme',       en: 'Productivism' },       b: { fr: 'Écologisme',          en: 'Ecologism' } },
+  { id: 'imm',  icon: '🌍', hue: 35,  name: { fr: 'Immigration',     en: 'Immigration' },
+    a: { fr: 'Fermeté',             en: 'Restrictive' },        b: { fr: 'Ouverture',           en: 'Open' } },
+  { id: 'dem',  icon: '🗳️', hue: 170, name: { fr: 'Démocratie',      en: 'Democracy' },
+    a: { fr: 'Représentative',      en: 'Representative' },     b: { fr: 'Directe',             en: 'Direct' } },
+  { id: 'laic', icon: '🏛️', hue: 290, name: { fr: 'Laïcité',         en: 'Secularism' },
+    a: { fr: 'Laïcité stricte',     en: 'Strict secularism' },  b: { fr: 'Laïcité ouverte',     en: 'Open secularism' } },
+  { id: 'jus',  icon: '⚖️', hue: 0,   name: { fr: 'Justice',         en: 'Justice' },
+    a: { fr: 'Répressive',          en: 'Punitive' },           b: { fr: 'Réhabilitative',      en: 'Rehabilitative' } },
+  { id: 'fisc', icon: '🧾', hue: 50,  name: { fr: 'Redistribution',  en: 'Redistribution' },
+    a: { fr: 'Forte redistribution',en: 'High redistribution' },b: { fr: 'Faible redistribution',en: 'Low redistribution' } },
+  { id: 'tech', icon: '🤖', hue: 200, name: { fr: 'Technologie',     en: 'Technology' },
+    a: { fr: 'Techno-sceptique',    en: 'Tech-sceptic' },       b: { fr: 'Techno-enthousiaste', en: 'Tech-enthusiast' } },
+];
+window.COUNTRIES = {};

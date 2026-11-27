@@ -1,0 +1,128 @@
+/* Données France. Pour ajouter un pays : copier ce fichier en data/xx.js,
+   adapter questions + profils, puis l'ajouter dans index.html. */
+(function () {
+  // [axe, sens, texte FR, texte EN, mode court ?]
+  // sens +1 : "d'accord" pousse vers le pôle B ; -1 : vers le pôle A.
+  const Q = [
+    // ÉCONOMIE (A = étatisme, B = libre marché)
+    ['eco', -1, "L'État devrait nationaliser les secteurs stratégiques (énergie, transports, banques).", "The state should nationalise strategic sectors (energy, transport, banks).", 1],
+    ['eco', +1, "Les entreprises créent plus de richesse quand l'État les laisse tranquilles.", "Businesses create more wealth when the state leaves them alone.", 1],
+    ['eco', -1, "Le salaire minimum devrait être fortement augmenté par la loi.", "The minimum wage should be sharply raised by law.", 0],
+    ['eco', +1, "Il faut faciliter les licenciements pour encourager les embauches.", "Dismissals should be made easier to encourage hiring.", 0],
+    ['eco', -1, "Les services publics devraient rester gérés par l'État plutôt que privatisés.", "Public services should stay state-run rather than be privatised.", 0],
+    // SOCIÉTÉ (A = conservateur, B = progressiste)
+    ['soc', +1, "Le mariage et l'adoption devraient être ouverts à tous les couples, sans distinction.", "Marriage and adoption should be open to all couples without distinction.", 1],
+    ['soc', -1, "La famille traditionnelle est le socle de la société.", "The traditional family is the foundation of society.", 1],
+    ['soc', +1, "L'euthanasie devrait être légalisée dans un cadre strict.", "Euthanasia should be legalised within a strict framework.", 0],
+    ['soc', -1, "Certaines évolutions sociétales récentes sont allées trop loin et il faut revenir en arrière.", "Some recent social changes have gone too far and should be rolled back.", 0],
+    ['soc', +1, "La société doit reconnaître et protéger toutes les identités de genre.", "Society must recognise and protect all gender identities.", 0],
+    // AUTORITÉ (A = autoritaire, B = libertaire)
+    ['lib', -1, "La sécurité justifie une surveillance accrue des communications.", "Security justifies increased surveillance of communications.", 1],
+    ['lib', +1, "Le cannabis devrait être légalisé.", "Cannabis should be legalised.", 1],
+    ['lib', -1, "Il faut plus d'ordre et de discipline à l'école et dans la société.", "We need more order and discipline in schools and in society.", 0],
+    ['lib', +1, "Le droit de manifester ne doit pas être restreint, même quand il perturbe l'ordre public.", "The right to protest must not be restricted, even when it disrupts public order.", 0],
+    ['lib', -1, "Un pouvoir fort vaut mieux que trop de débats et de contre-pouvoirs.", "A strong government is better than too much debate and too many checks and balances.", 0],
+    // NATION (A = souverainiste, B = internationaliste)
+    ['nat', -1, "La France doit garder la maîtrise de ses décisions, même si cela l'isole parfois.", "France must keep control of its own decisions, even if that sometimes isolates it.", 1],
+    ['nat', +1, "Les frontières sont un concept dépassé : l'avenir est à la coopération mondiale.", "Borders are outdated: the future lies in global cooperation.", 1],
+    ['nat', -1, "Nous devrions réduire notre dépendance au commerce international, même si les prix augmentent.", "We should reduce our reliance on international trade, even if prices rise.", 0],
+    ['nat', +1, "Les grandes décisions (climat, pandémies) doivent être prises au niveau mondial.", "Major decisions (climate, pandemics) should be made at the global level.", 0],
+    ['nat', -1, "L'intérêt national doit passer avant les engagements internationaux.", "The national interest must come before international commitments.", 0],
+    // EUROPE (A = eurosceptique, B = fédéraliste)
+    ['eur', -1, "La France devrait quitter l'Union européenne ou renégocier radicalement les traités.", "France should leave the European Union or radically renegotiate the treaties.", 1],
+    ['eur', +1, "L'UE devrait avoir sa propre armée et une politique étrangère commune.", "The EU should have its own army and a common foreign policy.", 1],
+    ['eur', -1, "Les lois européennes ne devraient pas primer sur les lois françaises.", "European laws should not take precedence over French laws.", 0],
+    ['eur', +1, "La monnaie unique est un atout pour la France.", "The single currency is an asset for France.", 0],
+    ['eur', +1, "Le Parlement européen devrait avoir plus de pouvoir au détriment des États.", "The European Parliament should have more power at the expense of member states.", 0],
+    // ÉCOLOGIE (A = productivisme, B = écologisme)
+    ['env', +1, "Il faut limiter la croissance économique pour préserver l'environnement.", "Economic growth must be limited in order to protect the environment.", 1],
+    ['env', -1, "La priorité est de relancer la production industrielle, même au prix de quelques entorses environnementales.", "The priority is to boost industrial production, even at some environmental cost.", 1],
+    ['env', +1, "Les produits polluants devraient être lourdement taxés, même si cela réduit le pouvoir d'achat.", "Polluting products should be heavily taxed, even if it reduces purchasing power.", 0],
+    ['env', -1, "La protection de l'environnement sert souvent de prétexte pour freiner l'économie.", "Environmental protection is often used as a pretext to hold back the economy.", 0],
+    ['env', +1, "Il faut interdire les pesticides les plus nocifs, même si les rendements agricoles baissent.", "The most harmful pesticides should be banned, even if crop yields fall.", 0],
+    // IMMIGRATION (A = fermeté, B = ouverture)
+    ['imm', -1, "Le nombre d'immigrés accueillis chaque année devrait être fortement réduit.", "The number of immigrants admitted each year should be sharply reduced.", 1],
+    ['imm', +1, "Les personnes sans-papiers installées depuis longtemps devraient être régularisées.", "Long-settled undocumented people should be granted legal status.", 1],
+    ['imm', -1, "Les étrangers devraient s'assimiler pleinement à la culture française.", "Foreigners should fully assimilate into French culture.", 0],
+    ['imm', +1, "L'immigration est globalement une chance pour la France.", "Immigration is, overall, an opportunity for France.", 0],
+    ['imm', -1, "Le droit du sol devrait être restreint.", "Birthright citizenship (droit du sol) should be restricted.", 0],
+    // DÉMOCRATIE (A = représentative, B = directe)
+    ['dem', +1, "Les citoyens devraient pouvoir proposer et voter des lois par référendum d'initiative citoyenne.", "Citizens should be able to propose and pass laws via citizen-initiated referendums.", 1],
+    ['dem', -1, "Les décisions complexes sont mieux prises par des experts que par le vote populaire.", "Complex decisions are better made by experts than by popular vote.", 1],
+    ['dem', +1, "Le vote blanc devrait être reconnu comme un suffrage exprimé.", "Blank votes should count as votes cast.", 0],
+    ['dem', +1, "Des assemblées de citoyens tirés au sort devraient pouvoir contraindre le Parlement.", "Assemblies of randomly selected citizens should be able to bind Parliament.", 0],
+    ['dem', -1, "Un exécutif fort et stable vaut mieux que des consultations permanentes.", "A strong, stable executive is better than constant consultations.", 0],
+    // LAÏCITÉ (A = stricte, B = ouverte)
+    ['laic', -1, "Les signes religieux devraient être interdits dans tout l'espace public.", "Religious symbols should be banned throughout the public space.", 1],
+    ['laic', +1, "Chacun doit pouvoir afficher sa religion dans l'espace public sans restriction.", "Everyone should be free to display their religion in public without restriction.", 1],
+    ['laic', -1, "La laïcité est avant tout un rempart contre l'influence des religions sur la vie publique.", "Secularism is above all a bulwark against religious influence on public life.", 0],
+    ['laic', +1, "Les cantines scolaires devraient proposer des menus adaptés aux convictions religieuses.", "School canteens should offer menus adapted to religious beliefs.", 0],
+    ['laic', -1, "Les religions devraient rester strictement cantonnées à la sphère privée.", "Religion should remain strictly confined to the private sphere.", 0],
+    // JUSTICE (A = répressive, B = réhabilitative)
+    ['jus', -1, "Les peines de prison devraient être plus longues et plus systématiques.", "Prison sentences should be longer and more systematic.", 1],
+    ['jus', +1, "La prison devrait être un dernier recours ; il faut privilégier les peines alternatives.", "Prison should be a last resort; alternative sentences should be favoured.", 1],
+    ['jus', -1, "Les mineurs délinquants devraient être jugés comme des adultes à partir d'un certain âge.", "Juvenile offenders should be tried as adults from a certain age.", 0],
+    ['jus', +1, "La police devrait être davantage contrôlée par des instances indépendantes.", "The police should be more closely overseen by independent bodies.", 0],
+    ['jus', -1, "La peine de mort devrait être rétablie pour les crimes les plus graves.", "The death penalty should be reinstated for the most serious crimes.", 0],
+    // REDISTRIBUTION (A = forte, B = faible)
+    ['fisc', -1, "Les impôts sur les très hauts revenus et patrimoines devraient être nettement relevés.", "Taxes on very high incomes and wealth should be raised significantly.", 1],
+    ['fisc', +1, "Il y a trop de prélèvements obligatoires en France.", "There are too many compulsory levies in France.", 1],
+    ['fisc', +1, "Les allocations devraient être conditionnées à une recherche active d'emploi.", "Benefits should be conditional on actively seeking work.", 0],
+    ['fisc', -1, "Un revenu universel versé à tous devrait être instauré.", "A universal basic income paid to everyone should be introduced.", 0],
+    ['fisc', -1, "La protection sociale doit rester financée solidairement, quelle que soit la contribution de chacun.", "Social protection should remain solidarity-funded, regardless of individual contributions.", 0],
+    // TECHNOLOGIE (A = sceptique, B = enthousiaste)
+    ['tech', +1, "Le progrès technologique résoudra l'essentiel de nos problèmes.", "Technological progress will solve most of our problems.", 1],
+    ['tech', -1, "Nous devrions ralentir le développement de l'intelligence artificielle et de l'automatisation.", "We should slow down the development of AI and automation.", 1],
+    ['tech', +1, "Les biotechnologies (OGM, édition génétique) devraient être encouragées.", "Biotechnologies (GMOs, gene editing) should be encouraged.", 0],
+    ['tech', -1, "Le numérique et les réseaux sociaux ont fait globalement plus de mal que de bien.", "Digital technology and social media have done more harm than good overall.", 0],
+    ['tech', +1, "L'exploration spatiale mérite des investissements publics importants.", "Space exploration deserves significant public investment.", 0],
+  ];
+
+  // Vecteurs : [eco, soc, lib, nat, eur, env, imm, dem, laic, jus, fisc, tech]  (0 = pôle A, 100 = pôle B)
+  const P = [
+    ['radical-left', '✊', 350, 'Gauche radicale', 'Radical left', 'ex. : LFI, PCF, NPA', 'e.g. LFI, PCF, NPA',
+      "Rupture avec le capitalisme, forte redistribution, services publics, droits sociaux et démocratie participative.", "Break with capitalism, strong redistribution, public services, social rights and participatory democracy.",
+      [8, 85, 65, 40, 35, 85, 90, 90, 50, 85, 5, 40]],
+    ['social-democrat', '🌹', 335, 'Social-démocratie', 'Social democracy', 'ex. : PS, Place publique', 'e.g. PS, Place publique',
+      "Économie de marché encadrée, protection sociale solide, ancrage européen et progrès sociétal.", "Regulated market economy, strong welfare state, pro-European and socially progressive.",
+      [30, 78, 65, 65, 78, 65, 70, 55, 55, 70, 25, 55]],
+    ['green', '🌿', 140, 'Écologisme', 'Green politics', 'ex. : Les Écologistes', 'e.g. Les Écologistes',
+      "L'urgence écologique guide tout : sobriété, justice sociale, démocratie locale et prudence technologique.", "Ecological urgency comes first: sobriety, social justice, local democracy and technological caution.",
+      [30, 88, 72, 70, 80, 95, 80, 75, 60, 80, 25, 25]],
+    ['centrist-liberal', '⚖️', 45, 'Libéralisme centriste', 'Centrist liberalism', 'ex. : Renaissance, MoDem', 'e.g. Renaissance, MoDem',
+      "Réformes pro-marché, Europe forte, ouverture, avec un État qui protège et investit.", "Pro-market reforms, strong Europe and openness, with a state that protects and invests.",
+      [70, 68, 55, 75, 90, 50, 55, 35, 45, 45, 65, 80]],
+    ['libertarian', '🗽', 55, 'Libéralisme classique', 'Classical liberalism', 'ex. : libéraux, libertariens', 'e.g. classical liberals, libertarians',
+      "Liberté individuelle et économique maximale, État minimal, impôts bas et ouverture au monde.", "Maximum personal and economic freedom, minimal state, low taxes and openness to the world.",
+      [92, 70, 92, 75, 60, 30, 70, 55, 50, 55, 92, 85]],
+    ['christian-democrat', '🕊️', 210, 'Centre-droit social', 'Christian democracy', 'ex. : centristes, démocrates-chrétiens', 'e.g. centrists, Christian democrats',
+      "Équilibre entre économie sociale de marché, valeurs traditionnelles modérées et construction européenne.", "Balance between social market economy, moderate traditional values and European integration.",
+      [55, 38, 50, 65, 85, 50, 50, 40, 70, 55, 50, 55]],
+    ['conservative-right', '🏛️', 225, 'Droite conservatrice', 'Conservative right', 'ex. : LR', 'e.g. LR',
+      "Économie libérale, ordre et autorité, immigration maîtrisée, valeurs traditionnelles.", "Liberal economics, law and order, controlled immigration and traditional values.",
+      [68, 28, 35, 40, 55, 35, 28, 40, 30, 25, 72, 65]],
+    ['sovereigntist', '🐓', 25, 'Souverainisme', 'Sovereigntism', 'ex. : gaullistes, souverainistes', 'e.g. Gaullists, sovereigntists',
+      "Indépendance nationale, État stratège, méfiance envers l'UE et la mondialisation.", "National independence, strategic state, wary of the EU and globalisation.",
+      [45, 35, 40, 12, 18, 40, 30, 50, 25, 30, 45, 55]],
+    ['national-populist', '🔵', 235, 'Droite nationale populiste', 'National populism', 'ex. : RN', 'e.g. RN',
+      "Priorité nationale, fermeté migratoire et sécuritaire, protection économique du peuple, référendum.", "National priority, tough on immigration and crime, economic protection of ordinary people, referendums.",
+      [42, 25, 28, 8, 10, 30, 8, 70, 22, 12, 55, 50]],
+    ['identitarian', '🛡️', 255, 'Droite identitaire', 'Identitarian right', 'ex. : Reconquête et mouvances proches', 'e.g. Reconquête and similar movements',
+      "Défense de l'identité civilisationnelle, conservatisme social, immigration quasi nulle.", "Defence of civilisational identity, social conservatism, near-zero immigration.",
+      [55, 8, 18, 5, 5, 30, 3, 50, 25, 8, 60, 45]],
+    ['anarchist', '🏴', 0, 'Anarchisme / libertaire de gauche', 'Anarchism / left-libertarian', 'ex. : mouvances libertaires', 'e.g. libertarian-left movements',
+      "Abolition des hiérarchies, autogestion, liberté totale, solidarité et horizontalité.", "Abolition of hierarchies, self-management, total freedom, solidarity and horizontality.",
+      [10, 95, 98, 95, 70, 80, 98, 98, 40, 95, 30, 40]],
+  ];
+
+  window.COUNTRIES.fr = {
+    flag: '🇫🇷',
+    name: { fr: 'France', en: 'France' },
+    questions: Q.map(q => ({ axis: q[0], dir: q[1], text: { fr: q[2], en: q[3] }, short: !!q[4] })),
+    profiles: P.map(p => ({
+      id: p[0], emoji: p[1], hue: p[2],
+      name: { fr: p[3], en: p[4] }, examples: { fr: p[5], en: p[6] }, desc: { fr: p[7], en: p[8] },
+      v: p[9],
+    })),
+  };
+})();
