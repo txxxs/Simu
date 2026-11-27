@@ -6,7 +6,7 @@
   <title>Simu — Test politique</title>
   <meta name="description" content="Test politique complet sur 12 axes : boussole, radar et courants les plus proches. FR / EN.">
   <meta name="theme-color" content="#0a0e27">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='url(%23g)'/%3E%3Ccircle cx='24' cy='24' r='14' stroke='%23fff' stroke-width='3' fill='none'/%3E%3Cpath d='M31 17l-5 10-10 5 5-10z' fill='%23fff'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
   <div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div>
 
   <header class="top">
-    <a class="brand" href="./" id="brand"><span class="logo">🧭</span><span data-i18n="brand">Simu</span></a>
+    <a class="brand" href="./" id="brand"><span class="logo" id="logo"></span><span data-i18n="brand">Simu</span></a>
     <div class="lang" role="group" aria-label="Language">
       <button data-lang="fr" aria-pressed="true">FR</button>
       <button data-lang="en" aria-pressed="false">EN</button>
@@ -26,77 +26,96 @@
   <main>
     <!-- ACCUEIL -->
     <section id="home" class="view active">
-      <span class="badge" data-i18n="hero.badge"></span>
-      <h1><span data-i18n="hero.title1"></span><br><span class="grad" data-i18n="hero.title2"></span></h1>
-      <p class="sub" data-i18n="hero.sub"></p>
+      <div class="orbit" id="orbit" aria-hidden="true"></div>
+      <div class="home-in">
+        <span class="badge st" style="--i:0" data-i18n="hero.badge"></span>
+        <h1 class="st" style="--i:1"><span data-i18n="hero.title1"></span><br><span class="grad" data-i18n="hero.title2"></span></h1>
+        <p class="sub st" style="--i:2" data-i18n="hero.sub"></p>
 
-      <div class="country-row" id="countryRow" hidden>
-        <label for="country" data-i18n="country"></label>
-        <select id="country"></select>
-      </div>
+        <div class="country-row st" style="--i:3" id="countryRow" hidden>
+          <label for="country" data-i18n="country"></label>
+          <select id="country"></select>
+        </div>
 
-      <div class="modes">
-        <button class="mode" data-mode="short" aria-pressed="true">
-          <b data-i18n="mode.short"></b><small data-i18n="mode.short.d"></small>
-        </button>
-        <button class="mode" data-mode="full" aria-pressed="false">
-          <b data-i18n="mode.full"></b><small data-i18n="mode.full.d"></small>
-        </button>
+        <div class="modes st" style="--i:3">
+          <button class="mode" data-mode="short" aria-pressed="true">
+            <span class="ui" data-icon="bolt" data-hue="45"></span>
+            <span class="mt"><b data-i18n="mode.short"></b><small data-i18n="mode.short.d"></small></span>
+          </button>
+          <button class="mode" data-mode="full" aria-pressed="false">
+            <span class="ui" data-icon="layers" data-hue="265"></span>
+            <span class="mt"><b data-i18n="mode.full"></b><small data-i18n="mode.full.d"></small></span>
+          </button>
+        </div>
+        <button class="cta st" style="--i:4" id="startBtn"><span data-i18n="start"></span><span class="ui" data-icon="next"></span></button>
+        <p class="priv st" style="--i:5"><span class="ui" data-icon="lock"></span><span data-i18n="priv"></span></p>
       </div>
-      <button class="cta" id="startBtn"><span data-i18n="start"></span> →</button>
-      <p class="priv" data-i18n="priv"></p>
     </section>
 
     <!-- QUESTIONS -->
     <section id="quiz" class="view">
       <div class="quiz-top">
-        <button class="ghost" id="backBtn" data-i18n="back"></button>
+        <button class="ghost" id="backBtn"><span class="ui" data-icon="back"></span><span data-i18n="back"></span></button>
         <span class="count" id="qCount"></span>
-        <button class="ghost" id="quitBtn" data-i18n="quit"></button>
+        <button class="ghost" id="quitBtn"><span data-i18n="quit"></span><span class="ui" data-icon="close"></span></button>
       </div>
       <div class="bar"><div id="barFill"></div></div>
       <article class="card qcard" id="qCard">
         <div class="chip" id="qChip"></div>
         <h2 id="qText"></h2>
         <div class="answers" id="answers"></div>
-        <div class="ans-label" id="ansLabel" aria-live="polite">&nbsp;</div>
+        <div class="ans-label" id="ansLabel" aria-live="polite"></div>
       </article>
-      <button class="ghost center" id="skipBtn" data-i18n="skip"></button>
+      <div class="quiz-bottom">
+        <button class="ghost" id="skipBtn"><span data-i18n="skip"></span><span class="ui" data-icon="skip"></span></button>
+        <small class="hint" data-i18n="hint"></small>
+      </div>
+    </section>
+
+    <!-- CALCUL -->
+    <section id="calc" class="view">
+      <div class="calc-box">
+        <div class="calc-logo" id="calcLogo"></div>
+        <h2 data-i18n="calc.title"></h2>
+        <p data-i18n="calc.sub"></p>
+        <div class="calc-icons" id="calcIcons"></div>
+        <div class="calc-bar"><i></i></div>
+      </div>
     </section>
 
     <!-- RÉSULTATS -->
     <section id="results" class="view">
       <h1 class="res-h" data-i18n="res.title"></h1>
 
-      <article class="card hero-res" id="heroRes"></article>
+      <article class="card reveal hero-res" id="heroRes"></article>
 
       <div class="grid2">
-        <article class="card">
+        <article class="card reveal">
           <h3 data-i18n="res.compass"></h3>
           <div id="compass" class="viz"></div>
         </article>
-        <article class="card">
+        <article class="card reveal">
           <h3 data-i18n="res.radar"></h3>
           <div id="radar" class="viz"></div>
         </article>
       </div>
 
-      <article class="card">
+      <article class="card reveal" id="axesCard">
         <h3 data-i18n="res.axes"></h3>
         <div id="axesBars"></div>
       </article>
 
-      <article class="card">
+      <article class="card reveal">
         <h3 data-i18n="res.ranking"></h3>
         <div id="ranking"></div>
         <button class="ghost center" id="moreBtn"></button>
         <p class="note" data-i18n="res.ranking.note"></p>
       </article>
 
-      <div class="actions">
-        <button class="cta" id="imgBtn" data-i18n="share.img"></button>
-        <button class="cta alt" id="linkBtn" data-i18n="share.link"></button>
-        <button class="cta alt" id="retakeBtn" data-i18n="retake"></button>
+      <div class="actions reveal">
+        <button class="cta" id="imgBtn"><span class="ui" data-icon="image"></span><span data-i18n="share.img"></span></button>
+        <button class="cta alt" id="linkBtn"><span class="ui" data-icon="link"></span><span data-i18n="share.link"></span></button>
+        <button class="cta alt" id="retakeBtn"><span class="ui" data-icon="refresh"></span><span data-i18n="retake"></span></button>
       </div>
       <p class="note center" data-i18n="disc"></p>
     </section>
@@ -108,6 +127,7 @@
   <script src="data/axes.js"></script>
   <script src="data/fr.js"></script>
   <script src="js/i18n.js"></script>
+  <script src="js/icons.js"></script>
   <script src="js/engine.js"></script>
   <script src="js/charts.js"></script>
   <script src="js/app.js"></script>

@@ -17,6 +17,7 @@ Déployable tel quel sur GitHub Pages, Vercel ou Netlify (dossier racine).
 | `data/axes.js` | Les 12 axes (communs à tous les pays) |
 | `data/fr.js` | Questions + profils/courants **France** |
 | `js/engine.js` | Calcul des scores, proximité, encodage de l'URL (sans DOM) |
+| `js/icons.js` | Jeu d'icônes maison en SVG (12 axes, 11 courants, interface) : aucun emoji système |
 | `js/charts.js` | Radar, boussole (SVG) et image de partage (canvas) |
 | `js/app.js` / `js/i18n.js` | Interface et traductions |
 
