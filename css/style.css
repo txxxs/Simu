@@ -31,10 +31,12 @@ button:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{
 /* ---------- En-tête et navigation ---------- */
 .top{display:flex;align-items:center;gap:12px;max-width:1000px;margin:0 auto;padding:16px clamp(16px,4vw,32px) 12px}
 .brand{display:flex;align-items:center;gap:10px;color:var(--txt);text-decoration:none}
-.logo{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;border:1px solid var(--line2);background:var(--surface);color:var(--aqua)}
+.logo{display:block;color:var(--txt);line-height:0}
+.brand-svg{display:block;overflow:visible}
+.brand-svg .lg-a{stroke:var(--aqua)}
+.brand-svg .lg-o{fill:var(--accent)}
 .needle{transform-origin:24px 24px;animation:wiggle 5s ease-in-out infinite}
 @keyframes wiggle{0%,100%{transform:rotate(-14deg)}30%{transform:rotate(22deg)}55%{transform:rotate(-6deg)}75%{transform:rotate(12deg)}}
-.wordmark{font-family:var(--display);font-weight:800;font-size:1.15rem;letter-spacing:.22em}
 .edition{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:2px 7px}
 .tools{margin-left:auto;display:flex;gap:6px}
 .tbtn{display:grid;place-items:center;min-width:36px;height:36px;padding:0 8px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--txt);font-family:var(--mono);font-weight:500;font-size:.78rem;transition:border-color .2s,background .2s}
@@ -139,7 +141,8 @@ select option{color:#000}
 
 /* ---------- Calcul ---------- */
 .calc-box{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:clamp(24px,8vh,80px) 0}
-.calc-logo{display:grid;place-items:center;width:96px;height:96px;border-radius:14px;border:1px solid var(--line2);background:var(--surface);color:var(--aqua)}
+.calc-logo{display:grid;place-items:center;width:104px;height:104px;border-radius:22px;border:1px solid var(--line2);background:var(--surface);color:var(--txt);animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px)}}
 .calc-logo .needle{animation:spinN 1.4s cubic-bezier(.5,0,.3,1) infinite}
 @keyframes spinN{to{transform:rotate(360deg)}}
 .calc-box h2{font-family:var(--display);font-weight:800;font-size:1.7rem;margin-top:10px}.calc-box p{color:var(--mut)}
@@ -303,7 +306,6 @@ select option{color:#000}
 a.cta{text-decoration:none}
 @media (max-width:480px){
   .top{gap:8px}
-  .wordmark{font-size:1rem;letter-spacing:.14em}
   .edition{display:none}
   .tools{gap:5px}
 }

@@ -73,16 +73,65 @@
   function badge(name, hue, size = 40) {
     return `<span class="bico" style="--h:${hue};--z:${size}px">${svg(name, { hue, size: Math.round(size * .62) })}</span>`;
   }
-  /** Logo boussole (aiguille animable). */
-  function logo(size = 24) {
-    return `<svg class="logo-svg" viewBox="0 0 48 48" width="${size}" height="${size}" fill="none" aria-hidden="true">
-      <circle cx="24" cy="24" r="17" stroke="currentColor" stroke-width="3.2"/>
-      <path d="M24 4v5M24 39v5M4 24h5M39 24h5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
-      <g class="needle"><path d="M31 17l-5 10-10 5 5-10z" fill="currentColor"/><circle cx="24" cy="24" r="2.600" fill="#ff7849"/></g></svg>`;
+  /* ===== Logo Azimut =====
+     Le « A » est un compas à pointes sèches : deux branches depuis une charnière (orange), l'arc turquoise
+     matérialise l'angle, c'est-à-dire l'azimut. Les lettres ZIMUT sont dessinées au même trait. Source unique :
+     tout (site, favicon, fichiers de assets/logo/) est généré depuis ces tracés (tools/make-logo.js). */
+  const LOGO = { dark: { ink: '#e8f0f7', aqua: '#38d9c0', orange: '#ff7849', bg: '#0a1b2e' }, light: { ink: '#0b1f33', aqua: '#0b8f7d', orange: '#e8541f', bg: '#eef3f8' } };
+  const SW = 4.2;
+  // Attributs de couleur : littéraux (fichiers) ou classes/currentColor (en ligne, suit le thème du site)
+  const pal = lit => ({
+    ink: lit ? `stroke="${lit.ink}"` : 'stroke="currentColor"',
+    arc: lit ? `stroke="${lit.aqua}"` : 'class="lg-a"',
+    hinge: lit ? `fill="${lit.orange}"` : 'class="lg-o"',
+  });
+  /** Graduation de l'angle : 5 traits en éventail sous la charnière, celui du milieu (le cap) est plus long. */
+  function grads(p) {
+    let d = '', mid = '';
+    for (let i = 0; i < 5; i++) {
+      const a = (106 - i * 8) * Math.PI / 180, r1 = 21, r2 = i === 2 ? 28 : 25;
+      const seg = 'M' + (24 + r1 * Math.cos(a)).toFixed(2) + ' ' + (7 + r1 * Math.sin(a)).toFixed(2) + 'L' + (24 + r2 * Math.cos(a)).toFixed(2) + ' ' + (7 + r2 * Math.sin(a)).toFixed(2);
+      if (i === 2) mid = seg; else d += seg;
+    }
+    return `<path d="${d}" ${p.arc} stroke-width="1.9" stroke-linecap="round" fill="none"/><path d="${mid}" ${p.arc} stroke-width="2.6" stroke-linecap="round" fill="none"/>`;
   }
+  /** Le « A » : repère 48×48, branches de (24,7) vers (10.5,41) et (37.5,41), arc de rayon 24 centré sur la charnière. */
+  function markInner(lit) {
+    const p = pal(lit);
+    return `<path d="M24 7L10.5 41M24 7L37.5 41" ${p.ink} stroke-width="${SW}" stroke-linecap="round" fill="none"/>` +
+      grads(p) +
+      `<circle cx="24" cy="7" r="3.7" ${p.hinge}/>`;
+  }
+  /** Lettres Z I M U T (hauteur 34, alignées sur le A), tracées au même trait. Départ x = 50. */
+  function lettersInner(lit) {
+    const p = pal(lit), t = (d, x) => `<path transform="translate(${x} 7)" d="${d}" ${p.ink} stroke-width="${SW}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
+    return t('M0 0H24L0 34H24', 48) + t('M0 0V34', 84) + t('M0 34V0L15 22L30 0V34', 96) + t('M0 0V22A12 12 0 0 0 24 22V0', 138) + t('M0 0H26M13 0V34', 174);
+  }
+  const VB_LOCKUP = '6 1 200 44', VB_MARK = '6 1 36 44';
+  /** Logo complet en ligne (suit le thème) */
+  function brand(h = 30) {
+    return `<svg class="brand-svg" viewBox="${VB_LOCKUP}" height="${h}" width="${Math.round(h * 200 / 44)}" role="img" aria-label="Azimut">${markInner()}${lettersInner()}</svg>`;
+  }
+  /** Le A seul en ligne */
+  function logo(size = 24) {
+    return `<svg class="brand-svg" viewBox="${VB_MARK}" height="${size}" width="${Math.round(size * 36 / 44)}" role="img" aria-label="Azimut">${markInner()}</svg>`;
+  }
+  /** Fichiers autonomes (couleurs littérales) : theme 'dark' | 'light'. kind : 'lockup' | 'mark' | 'icon' */
+  function file(kind, theme = 'dark') {
+    const c = LOGO[theme], head = 'xmlns="http://www.w3.org/2000/svg"';
+    if (kind === 'lockup') return `<svg ${head} viewBox="${VB_LOCKUP}" width="800" height="176" role="img" aria-label="Azimut">${markInner(c)}${lettersInner(c)}</svg>`;
+    if (kind === 'mark') return `<svg ${head} viewBox="${VB_MARK}" width="288" height="352" role="img" aria-label="Azimut">${markInner(c)}</svg>`;
+    // icône d'application / favicon : tuile arrondie + le A
+    return `<svg ${head} viewBox="0 0 96 96" width="512" height="512" role="img" aria-label="Azimut"><rect width="96" height="96" rx="22" fill="${c.bg}"/><g transform="translate(14 11) scale(1.38)">${markInner(c)}</g></svg>`;
+  }
+  /** Image (canvas) depuis un SVG autonome */
+  function loadSvg(str) {
+    return new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(str); });
+  }
+
   /** Pastille avec texte (sigle, code pays, initiales). */
   function text(label, hue, size = 40) {
     return `<span class="bico tx" style="--h:${hue};--z:${size}px">${label}</span>`;
   }
-  window.Icons = { svg, nested, image, badge, text, logo, has: n => !!I[n] };
+  window.Icons = { svg, nested, image, badge, text, logo, brand, file, loadSvg, has: n => !!I[n] };
 })();

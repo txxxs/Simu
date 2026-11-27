@@ -99,11 +99,9 @@
     c.lineWidth = 1.5; for (let r = 40; r < 900; r += 56) { c.strokeStyle = 'rgba(56,217,192,.07)'; c.beginPath(); c.arc(W - 60, 60, r, 0, TAU); c.stroke(); }
     for (let r = 50; r < 700; r += 64) { c.strokeStyle = 'rgba(255,120,73,.05)'; c.beginPath(); c.arc(40, H - 40, r, 0, TAU); c.stroke(); }
 
-    // en-tête
-    box(64, 48, 56, 56, 12, SURF, LINE2);
-    c.strokeStyle = AQ; c.lineWidth = 4; c.beginPath(); c.arc(92, 76, 15, 0, TAU); c.stroke();
-    c.fillStyle = OR; c.beginPath(); c.moveTo(102, 66); c.lineTo(96, 80); c.lineTo(82, 86); c.lineTo(88, 72); c.closePath(); c.fill();
-    c.textAlign = 'left'; c.fillStyle = TXT; c.font = font(800, 34, DISP); c.fillText('A Z I M U T', 142, 90);
+    // en-tête : logotype officiel
+    const lock = await Icons.loadSvg(Icons.file('lockup', 'dark'));
+    if (lock) c.drawImage(lock, 64, 46, 56 * 200 / 44, 56);
     c.font = font(500, 24, MONO); c.fillStyle = OR; c.textAlign = 'right'; c.fillText('2027', W - 64, 88);
 
     // famille

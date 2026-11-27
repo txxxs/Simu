@@ -35,8 +35,8 @@
 
   /* ---------- Icônes statiques ---------- */
   function initIcons() {
-    $('#logo').innerHTML = Icons.logo(28);
-    $('#calcLogo').innerHTML = Icons.logo(60);
+    $('#logo').innerHTML = Icons.brand(30);
+    $('#calcLogo').innerHTML = Icons.logo(64);
     $('#dial').innerHTML = Charts.dial();
     $$('[data-icon]').forEach(el => { el.innerHTML = Icons.svg(el.dataset.icon, el.dataset.hue ? { hue: +el.dataset.hue, size: 26 } : { mono: true, size: 20 }); });
     $('#calcIcons').innerHTML = AXES.map(ax => Icons.badge(ax.id, ax.hue, 44)).join('');
