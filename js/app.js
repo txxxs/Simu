@@ -237,12 +237,19 @@
     const dots = n => `<span class="conf c${n}" title="${t('conf.t')} : ${t('conf.' + n)}" aria-label="${t('conf.t')} : ${t('conf.' + n)}"><i></i><i></i><i></i></span>`;
     const candLine = x => !x.cand ? '' : `<small class="cand${x.cand.name ? ' on' : ''}">${x.cand.name ? t('cand') + ' <b>' + x.cand.name + '</b> · ' : ''}${x.cand.status[L]}</small>`;
     const note = d.id === 'parties' ? `<p class="cand-note">${t('cand.note')}</p>` : '';
+    const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+    const basis = (x, r) => !x.basis ? '' : `<details class="basis"><summary>${t('basis.t')}</summary>
+        <p>${esc(x.basis[L])}</p>
+        ${r.cov < 1 ? `<p class="cov">${t('cov', { n: Math.round(r.cov * 12) })}</p>` : ''}
+        ${x.src && x.src.length ? `<ul>${x.src.map(s => `<li><a href="${esc(s[1])}" target="_blank" rel="noopener noreferrer">${esc(s[0])}</a></li>`).join('')}</ul>` : ''}
+      </details>`;
     $('#matchList').innerHTML = note + shown.map((r, i) => {
       const x = r.item, sub = d.sub(x);
       return `<div class="rk" style="--h:${x.hue};--k:${i}">
         <span class="rk-n">${d.badge(x, 40)}<span class="rk-t"><b>${x.name[L]}${x.conf ? dots(x.conf) : ''}</b>${sub ? `<small>${sub[L]}</small>` : ''}${candLine(x)}</span></span>
         <div class="rk-bar"><i style="width:${r.sim}%"></i></div><b class="rk-p">${r.sim}%</b>
         <div class="rk-why">${list(r.close, 'close')}${list(r.far, 'far')}</div>
+        ${basis(x, r)}
       </div>`;
     }).join('');
     $('#moreBtn').textContent = t(state.showAll ? 'res.less' : 'res.more');

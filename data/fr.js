@@ -153,53 +153,13 @@
       [10, 95, 98, 95, 70, 80, 98, 98, 40, 95, 30, 40]],
   ];
 
-  /* Partis français et candidatures à la présidentielle 2027.
-     Candidatures : état au 27 nov. 2026, d'après LCP (maj 23 nov. 2026) et Wikipédia (« Élection présidentielle
-     française de 2027 »). Liste NON officielle : validation par le Conseil constitutionnel après 500 parrainages
-     (date limite 12 mars 2027) ; 1er tour le 18 avril 2027.
-     Ligne : [sigle, teinte, nom, famille FR, famille EN, vecteur, fiabilité 1-3, candidat, statut FR, statut EN]
-     Vecteurs = ESTIMATIONS documentées par les programmes, pas encore calibrées sur l'enquête d'experts CHES
-     (voir tools/ches_calibrate.py). Fiabilité : 3 = positions très documentées, 2 = correctement documentées,
-     1 = peu documentées (parti récent/confidentiel) → à affiner en priorité. */
-  const PARTIES = [
-    // --- Gauche radicale / extrême gauche
-    ['LO',   350, 'Lutte ouvrière',            'Extrême gauche', 'Far left',            [3, 82, 70, 90, 35, 55, 90, 60, 45, 80, 3, 50], 3, 'Nathalie Arthaud', 'Candidate déclarée (8 déc. 2025)', 'Declared candidate (8 Dec 2025)'],
-    ['NPAR', 345, 'NPA – Révolutionnaires',    'Extrême gauche', 'Far left',            [3, 85, 75, 92, 30, 60, 92, 65, 45, 82, 3, 45], 2, 'Selma Labib', 'Candidature annoncée (17 juin 2026)', 'Candidacy announced (17 Jun 2026)'],
-    ['RP',   340, 'Révolution permanente',     'Extrême gauche', 'Far left',            [3, 85, 75, 92, 30, 55, 92, 60, 40, 82, 3, 45], 1, 'Anasse Kazib', 'Candidature annoncée (1er juin 2026)', 'Candidacy announced (1 Jun 2026)'],
-    ['LFI',  5,   'La France insoumise',       'Gauche radicale', 'Radical left',       [10, 85, 65, 40, 30, 88, 85, 90, 45, 85, 5, 35], 3, 'Jean-Luc Mélenchon', 'Candidat déclaré (3 mai 2026)', 'Declared candidate (3 May 2026)'],
-    ['PCF',  355, 'Parti communiste français', 'Gauche radicale', 'Radical left',       [8, 80, 60, 45, 40, 70, 75, 70, 40, 75, 5, 50], 3, 'Fabien Roussel', 'Désigné par son parti (6 sept. 2026)', 'Chosen by his party (6 Sep 2026)'],
-    // --- Gauche sociale-démocrate et écologiste
-    ['PS',   335, 'Parti socialiste',          'Social-démocratie', 'Social democracy', [30, 78, 60, 65, 78, 62, 68, 50, 55, 68, 28, 55], 3, 'Raphaël Glucksmann (soutien)', 'Primaire PS–PP–GRS remportée le 11 oct. 2026 ; Karim Bouamrane s’est aussi déclaré', 'PS–PP–GRS primary won on 11 Oct 2026; Karim Bouamrane also declared'],
-    ['PP',   325, 'Place publique',            'Social-démocratie', 'Social democracy', [38, 80, 60, 72, 92, 75, 68, 48, 50, 68, 30, 60], 2, 'Raphaël Glucksmann', 'Vainqueur de la primaire (11 oct. 2026, 66 %)', 'Primary winner (11 Oct 2026, 66%)'],
-    ['LÉ',   140, 'Les Écologistes',           'Écologie politique', 'Green politics',  [28, 88, 72, 70, 80, 95, 82, 78, 62, 82, 22, 25], 3, 'Marine Tondelier', 'Désignée (21 sept. 2026) ; vote des militants prévu le 13 déc.', 'Chosen (21 Sep 2026); members’ vote due 13 Dec'],
-    ['GE',   120, 'Génération écologie',       'Écologie politique', 'Green politics',  [30, 82, 62, 65, 75, 95, 70, 55, 35, 75, 25, 25], 1, 'Delphine Batho', 'Candidate déclarée (25 nov. 2025)', 'Declared candidate (25 Nov 2025)'],
-    ['PA',   100, 'Parti animaliste',          'Animalisme', 'Animal rights',           [35, 85, 70, 70, 65, 88, 75, 60, 60, 80, 25, 35], 1, 'Mira Markovic', 'Candidature annoncée (2 oct. 2026)', 'Candidacy announced (2 Oct 2026)'],
-    ['VOLT', 275, 'Volt France',               'Fédéralisme progressiste', 'Progressive federalism', [55, 85, 72, 95, 98, 80, 80, 70, 70, 70, 40, 65], 2, null, 'Pas de candidat déclaré', 'No declared candidate'],
-    // --- Centre et bloc central
-    ['RE',   45,  'Renaissance',               'Centre libéral', 'Liberal centre',      [70, 68, 52, 75, 90, 52, 55, 35, 45, 45, 65, 82], 3, 'Gabriel Attal', 'Candidat déclaré (22 mai 2026)', 'Declared candidate (22 May 2026)'],
-    ['MD',   30,  'MoDem',                     'Centre', 'Centre',                      [58, 65, 55, 75, 92, 55, 58, 45, 50, 55, 55, 65], 2, null, 'Pas de candidat déclaré', 'No declared candidate'],
-    ['HOR',  200, 'Horizons',                  'Centre droit', 'Centre-right',          [72, 55, 45, 70, 82, 45, 45, 35, 40, 38, 65, 75], 2, 'Édouard Philippe', 'Candidat déclaré (depuis sept. 2024)', 'Declared candidate (since Sep 2024)'],
-    ['UDI',  185, 'UDI',                       'Centre droit', 'Centre-right',          [62, 55, 48, 68, 85, 48, 50, 40, 45, 45, 58, 65], 2, null, 'Pas de candidat déclaré', 'No declared candidate'],
-    ['LFH',  170, 'La France humaniste',       'Gaullisme humaniste', 'Humanist Gaullism', [50, 60, 58, 60, 62, 55, 60, 50, 45, 60, 45, 55], 1, 'Dominique de Villepin', 'Candidat déclaré (20 nov. 2026)', 'Declared candidate (20 Nov 2026)'],
-    // --- Droite
-    ['LR',   220, 'Les Républicains',          'Droite conservatrice', 'Conservative right', [68, 28, 35, 40, 55, 35, 28, 40, 30, 25, 72, 65], 3, 'Bruno Retailleau', 'Désigné par les adhérents (19 avr. 2026)', 'Chosen by members (19 Apr 2026)'],
-    ['NE',   210, 'Nouvelle Énergie',          'Droite libérale', 'Liberal right',      [80, 35, 40, 45, 50, 40, 35, 45, 35, 35, 80, 70], 1, 'David Lisnard', 'Candidat déclaré (31 mars 2026), a quitté LR', 'Declared candidate (31 Mar 2026), left LR'],
-    ['NF',   215, 'Nous France',               'Droite sociale', 'Social right',        [58, 38, 42, 48, 60, 40, 38, 40, 35, 35, 55, 60], 1, 'Xavier Bertrand', 'Candidature annoncée ; décision finale attendue d’ici fin 2026', 'Candidacy announced; final decision due by end-2026'],
-    // --- Souverainistes et droite nationale
-    ['DLF',  230, 'Debout la France',          'Souverainisme', 'Sovereigntism',        [50, 28, 40, 8, 8, 32, 20, 60, 25, 22, 48, 50], 2, 'Nicolas Dupont-Aignan', 'Candidat déclaré (19 sept. 2026)', 'Declared candidate (19 Sep 2026)'],
-    ['UPR',  25,  'Union populaire républicaine', 'Souverainisme (Frexit)', 'Sovereigntism (Frexit)', [45, 45, 45, 8, 1, 40, 30, 70, 35, 35, 45, 55], 2, 'François Asselineau', 'Candidat déclaré', 'Declared candidate'],
-    ['LP',   15,  'Les Patriotes',             'Souverainisme (Frexit)', 'Sovereigntism (Frexit)', [35, 25, 35, 5, 2, 35, 12, 70, 25, 15, 45, 55], 2, 'Florian Philippot', 'Candidat déclaré (9 mai 2026)', 'Declared candidate (9 May 2026)'],
-    ['RES',  35,  'Résistons !',               'Populisme rural', 'Rural populism',     [40, 35, 40, 25, 30, 45, 30, 80, 40, 35, 45, 45], 1, 'Jean Lassalle', 'Candidature annoncée', 'Candidacy announced'],
-    ['RN',   240, 'Rassemblement national',    'Droite nationale', 'National right',    [42, 28, 28, 8, 12, 28, 10, 70, 22, 12, 55, 50], 3, 'Marine Le Pen', 'Candidature confirmée (7 juil. 2026) ; pourvoi en cassation en attente', 'Candidacy confirmed (7 Jul 2026); appeal to the Court of Cassation pending'],
-    ['REC',  260, 'Reconquête',                'Droite identitaire', 'Identitarian right', [58, 8, 15, 6, 6, 28, 3, 50, 25, 8, 62, 45], 3, 'Éric Zemmour', 'Candidat déclaré (17 sept. 2026)', 'Declared candidate (17 Sep 2026)'],
-  ];
-
   window.COUNTRIES.fr = {
     flag: 'FR',
     name: { fr: 'France', en: 'France' },
-    parties: PARTIES.map(p => ({
-      code: p[0], hue: p[1], name: { fr: p[2], en: p[2] }, sub: { fr: p[3], en: p[4] }, v: p[5].slice(), conf: p[6],
-      cand: p[7] ? { name: p[7], status: { fr: p[8], en: p[9] } } : { name: null, status: { fr: p[8], en: p[9] } },
+    // Partis + candidatures 2027 : voir data/fr-parties.js (positions documentées, sources, thèmes non notés = null)
+    parties: (window.FR_PARTIES || []).map(p => ({
+      code: p.code, hue: p.hue, name: { fr: p.name, en: p.name }, sub: p.fam, v: p.v.slice(), conf: p.conf,
+      cand: p.cand, basis: p.basis, src: p.src,
     })),
     questions: Q.map(q => ({ axis: q[0], dir: q[1], text: { fr: q[2], en: q[3] }, lvl: q[4] ? 1 : (q[5] || 2) })),
     profiles: P.map(p => ({

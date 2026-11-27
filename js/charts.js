@@ -14,7 +14,7 @@
       s += `<polygon points="${poly(vec.map(() => l), N, R, cx, cy)}" class="ring r-in${l === 50 ? ' mid' : ''}" style="animation-delay:${k * 90}ms"/>`;
     });
     vec.forEach((_, i) => { const [x, y] = pt(i, N, R, cx, cy); s += `<line x1="${cx}" y1="${cy}" x2="${f(x)}" y2="${f(y)}" class="spoke r-in"/>`; });
-    if (vs) s += `<polygon points="${poly(vs.v, N, R, cx, cy)}" fill="rgba(244,114,182,.10)" stroke="#f472b6" stroke-width="2.5" stroke-dasharray="7 6" stroke-linejoin="round" class="shape vs"/>`;
+    if (vs) s += `<polygon points="${poly(vs.v.map((x, i) => x == null ? vec[i] : x), N, R, cx, cy)}" fill="rgba(244,114,182,.10)" stroke="#f472b6" stroke-width="2.5" stroke-dasharray="7 6" stroke-linejoin="round" class="shape vs"/>`;
     s += `<polygon points="${poly(vec, N, R, cx, cy)}" fill="url(#rg)" fill-opacity=".32" stroke="url(#rg)" stroke-width="2.5" stroke-linejoin="round" class="shape"/>`;
     vec.forEach((v, i) => {
       const [x, y] = pt(i, N, R * v / 100, cx, cy);
@@ -38,7 +38,7 @@
     const X = AXES[xi], Y = AXES[yi];
     const dx = x0 + W * vec[xi] / 100 - mx, dy = y0 + W * vec[yi] / 100 - my;
     const q = (x, y, c) => `<rect x="${x}" y="${y}" width="${W / 2}" height="${W / 2}" fill="${c}"/>`;
-    const marks = (dots || []).map((d, k) => {
+    const marks = (dots || []).filter(d => d.v[xi] != null && d.v[yi] != null).map((d, k) => {
       const x = x0 + W * d.v[xi] / 100, y = y0 + W * d.v[yi] / 100;
       return `<g class="mk" style="animation-delay:${700 + k * 120}ms"><circle cx="${f(x)}" cy="${f(y)}" r="5" fill="hsl(${d.hue} 90% 62%)" stroke="#fff" stroke-width="1.5"/>
         <text x="${f(x)}" y="${f(k % 2 ? y + 17 : y - 9)}" text-anchor="middle" class="mt">${d.label}</text></g>`;

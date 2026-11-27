@@ -309,3 +309,16 @@ select option{color:#000}
 .conf.c1 i:nth-child(1){background:#fb923c}
 .conf.c2 i:nth-child(-n+2){background:#fbbf24}
 .conf.c3 i{background:#4ade80}
+
+/* Détail « sur quoi repose cette estimation » */
+.basis{grid-column:1/-1;margin-top:4px;padding-left:52px;font-size:.78rem}
+.basis summary{cursor:pointer;color:var(--c);list-style:none;display:inline-flex;align-items:center;gap:6px;user-select:none}
+.basis summary::-webkit-details-marker{display:none}
+.basis summary::before{content:"+";display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;border:1px solid var(--c);font-size:.8rem;line-height:1;transition:transform .25s var(--spring)}
+.basis[open] summary::before{content:"–"}
+.basis p{margin-top:8px;color:#d6dcf5;line-height:1.55}
+.basis .cov{color:#fbbf24}
+.basis ul{margin:8px 0 2px 16px;padding:0;color:var(--mut)}
+.basis li{margin:3px 0}
+.basis a{color:#93c5fd;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere}
+@media (max-width:760px){.basis{padding-left:0}}

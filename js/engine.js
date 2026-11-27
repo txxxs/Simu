@@ -30,13 +30,19 @@
 
   /** Classe des éléments {v:[12]} par proximité avec vec. weights : poids par axe (priorités). */
   function rank(items, vec, weights) {
-    const w = weights || vec.map(() => 1), W = w.reduce((s, x) => s + x, 0);
+    const w0 = weights || vec.map(() => 1);
     return items.map(item => {
-      const diffs = item.v.map((x, i) => Math.abs(x - vec[i]));
-      const d = Math.sqrt(diffs.reduce((s, x, i) => s + w[i] * x * x, 0) / W);
-      const idx = diffs.map((x, i) => i).sort((a, b) => diffs[a] - diffs[b]);
+      // Un thème non documenté (valeur null) est ignoré, plutôt que deviné.
+      const known = item.v.map(x => x != null && !Number.isNaN(x));
+      const w = w0.map((x, i) => known[i] ? x : 0), W = w.reduce((s, x) => s + x, 0) || 1;
+      const diffs = item.v.map((x, i) => known[i] ? Math.abs(x - vec[i]) : null);
+      const d = Math.sqrt(diffs.reduce((s, x, i) => s + (known[i] ? w[i] * x * x : 0), 0) / W);
+      const cov = known.filter(Boolean).length / item.v.length;
+      const idx = diffs.map((x, i) => i).filter(i => known[i]).sort((a, b) => diffs[a] - diffs[b]);
       return {
-        item, sim: Math.max(0, Math.round(100 - d * 1.4)),
+        item, cov,
+        // moins de thèmes documentés => proximité réduite (on ne peut pas affirmer une forte proximité)
+        sim: Math.max(0, Math.round(100 - d * 1.4 - (1 - cov) * 20)),
         close: idx.slice(0, 2).filter(i => diffs[i] <= 18),
         far: idx.slice(-2).reverse().filter(i => diffs[i] >= 30),
       };

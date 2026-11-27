@@ -22,7 +22,8 @@ Déployable tel quel sur GitHub Pages, Vercel ou Netlify (dossier racine).
 | Fichier | Rôle |
 |---|---|
 | `data/axes.js` | Les 12 axes (communs à tous les pays) |
-| `data/fr.js` | Questions, **partis + candidatures 2027** et familles politiques de la **France** |
+| `data/fr.js` | Questions et familles politiques de la **France** |
+| `data/fr-parties.js` | **Partis + candidatures 2027**, positions documentées par programme, sources, fiabilité |
 | `data/fr-ches.js` | Calibrage CHES généré (vide tant que non calibré) |
 | `tools/ches_calibrate.py` | Calibre les partis sur le jeu CHES |
 | `data/world.js` | **Idéologies**, **pays**, **personnalités** (communs à tous les pays) |
