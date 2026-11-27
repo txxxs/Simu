@@ -2,7 +2,8 @@ window.I18N = {
   fr: {
     'brand': 'Simu',
     'hero.badge': 'Test politique • 12 axes',
-    'hero.title1': 'Où te situes-tu', 'hero.title2': 'vraiment ?', 'hero.title3': 'sur 12 axes',
+    'hero.title1': 'Où te situes‑tu', 'hero.title2': 'vraiment ?', 'hero.title3': 'sur 12 axes',
+    'hero.eyebrow': 'Test politique · Présidentielle 2027', 'res.eyebrow': 'Ton profil', 'about.eyebrow': 'Transparence',
     'hero.tag': 'Partis 2027, idéologies, pays et personnalités à comparer !',
     'pick.q': 'Trois, dix ou seize minutes ?', 'pick.a': 'À toi de choisir !',
     'mode.short.q': '24 questions', 'mode.full.q': '60 questions', 'mode.deep.q': '96 questions',
@@ -61,6 +62,7 @@ window.I18N = {
     'brand': 'Simu',
     'hero.badge': 'Political test • 12 axes',
     'hero.title1': 'Where do you', 'hero.title2': 'really stand', 'hero.title3': 'on 12 axes?',
+    'hero.eyebrow': 'Political test · 2027 election', 'res.eyebrow': 'Your profile', 'about.eyebrow': 'Transparency',
     'hero.tag': '2027 parties, ideologies, countries and figures to compare!',
     'pick.q': 'Three, ten or sixteen minutes?', 'pick.a': 'You pick!',
     'mode.short.q': '24 questions', 'mode.full.q': '60 questions', 'mode.deep.q': '96 questions',

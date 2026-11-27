@@ -5,67 +5,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Simu Politique</title>
   <meta name="description" content="Test politique sur 12 axes : partis 2027, idéologies, pays et personnalités les plus proches. FR / EN.">
-  <meta name="theme-color" content="#4b2a6e">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect x='2' y='2' width='44' height='44' rx='12' fill='%23f7d866' stroke='%231f1030' stroke-width='3'/%3E%3Ccircle cx='24' cy='24' r='13' stroke='%231f1030' stroke-width='3' fill='none'/%3E%3Cpath d='M31 17l-5 10-10 5 5-10z' fill='%231f1030'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#0a1b2e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='10' fill='%230a1b2e'/%3E%3Ccircle cx='24' cy='24' r='15' stroke='%2338d9c0' stroke-width='3' fill='none'/%3E%3Cpath d='M31 17l-5 10-10 5 5-10z' fill='%23ff7849'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <div class="topo" aria-hidden="true"></div>
+
   <header class="top">
-    <a class="brand" href="./" id="brand" aria-label="Simu"><span class="logo" id="logo"></span><span class="wordmark">Si<i>mu</i></span></a>
-    <span class="beta">BETA</span>
+    <a class="brand" href="./" id="brand" aria-label="Simu"><span class="logo" id="logo"></span><span class="wordmark">SIMU</span></a>
+    <span class="edition">2027</span>
     <div class="tools">
-      <button class="rbtn" id="langBtn" aria-label="Langue / Language">FR</button>
-      <button class="rbtn" id="fsBtn" aria-label="Taille du texte"><span class="aa">A<small>A</small></span></button>
-      <button class="rbtn yellow" id="themeBtn" aria-label="Contraste / thème"><span class="ui" data-icon="contrast"></span></button>
+      <button class="tbtn" id="langBtn" aria-label="Langue / Language">FR</button>
+      <button class="tbtn" id="fsBtn" aria-label="Taille du texte">A+</button>
+      <button class="tbtn" id="themeBtn" aria-label="Thème clair / sombre"><span class="ui" data-icon="contrast"></span></button>
     </div>
   </header>
+  <nav class="nav" aria-label="Navigation">
+    <button data-nav="test" aria-current="page" data-i18n="nav.test"></button>
+    <button data-nav="results" data-i18n="nav.results"></button>
+    <button data-nav="about" data-i18n="nav.about"></button>
+  </nav>
 
   <main>
     <!-- ACCUEIL -->
     <section id="home" class="view active">
-      <h1 class="hero-h st" style="--i:0">
-        <span class="hl y" data-i18n="hero.title1"></span>
-        <span class="hl p" data-i18n="hero.title2"></span>
-        <span class="hl c" data-i18n="hero.title3"></span>
-      </h1>
-      <p class="tagline st" style="--i:1" data-i18n="hero.tag"></p>
-      <h2 class="pick st" style="--i:2"><span data-i18n="pick.q"></span> <em data-i18n="pick.a"></em></h2>
+      <div class="hero">
+        <div class="hero-txt-col">
+          <p class="eyebrow st" style="--i:0" data-i18n="hero.eyebrow"></p>
+          <h1 class="hero-h st" style="--i:1"><span data-i18n="hero.title1"></span> <em data-i18n="hero.title2"></em> <span class="thin" data-i18n="hero.title3"></span></h1>
+          <p class="tagline st" style="--i:2" data-i18n="hero.tag"></p>
+        </div>
+        <div class="dial st" style="--i:2" id="dial" aria-hidden="true"></div>
+      </div>
 
       <div class="country-row st" style="--i:3" id="countryRow" hidden>
         <label for="country" data-i18n="country"></label>
         <select id="country"></select>
       </div>
 
-      <div class="modes st" style="--i:3">
+      <h2 class="pick st" style="--i:3"><span class="num">01</span> <span data-i18n="pick.q"></span></h2>
+      <div class="modes st" style="--i:4">
         <button class="mode" data-mode="short" aria-pressed="true">
-          <span class="mnum">4<small>min</small></span>
-          <b data-i18n="mode.short"></b>
-          <span class="mtag" data-i18n="mode.short.q"></span>
+          <span class="mradio"></span><span class="mtime">04<small>min</small></span>
+          <span class="mlabel"><b data-i18n="mode.short"></b><small data-i18n="mode.short.q"></small></span>
         </button>
         <button class="mode" data-mode="full" aria-pressed="false">
-          <span class="mnum">10<small>min</small></span>
-          <b data-i18n="mode.full"></b>
-          <span class="mtag" data-i18n="mode.full.q"></span>
+          <span class="mradio"></span><span class="mtime">10<small>min</small></span>
+          <span class="mlabel"><b data-i18n="mode.full"></b><small data-i18n="mode.full.q"></small></span>
         </button>
-        <button class="mode wide" data-mode="deep" aria-pressed="false">
-          <span class="mnum">16<small>+ min</small></span>
-          <b data-i18n="mode.deep"></b>
-          <span class="mtag" data-i18n="mode.deep.q"></span>
+        <button class="mode" data-mode="deep" aria-pressed="false">
+          <span class="mradio"></span><span class="mtime">16+<small>min</small></span>
+          <span class="mlabel"><b data-i18n="mode.deep"></b><small data-i18n="mode.deep.q"></small></span>
         </button>
       </div>
-      <button class="cta st" style="--i:4" id="startBtn"><span data-i18n="start"></span><span class="ui" data-icon="next"></span></button>
-      <p class="priv st" style="--i:5"><span class="ui" data-icon="lock"></span><span data-i18n="priv"></span></p>
+      <button class="cta st" style="--i:5" id="startBtn"><span data-i18n="start"></span><span class="ui" data-icon="next"></span></button>
+      <p class="priv st" style="--i:6"><span class="ui" data-icon="lock"></span><span data-i18n="priv"></span></p>
     </section>
 
     <!-- QUESTIONS -->
     <section id="quiz" class="view">
       <div class="quiz-top">
-        <button class="rbtn small" id="backBtn" aria-label="Retour"><span class="ui" data-icon="back"></span></button>
+        <button class="tbtn" id="backBtn" aria-label="Retour"><span class="ui" data-icon="back"></span></button>
         <span class="count" id="qCount"></span>
-        <button class="rbtn small" id="quitBtn" aria-label="Quitter"><span class="ui" data-icon="close"></span></button>
+        <button class="tbtn" id="quitBtn" aria-label="Quitter"><span class="ui" data-icon="close"></span></button>
       </div>
       <div class="bar"><div id="barFill"></div></div>
       <article class="card qcard" id="qCard">
@@ -93,10 +99,10 @@
 
     <!-- RÉSULTATS -->
     <section id="results" class="view">
-      <h1 class="res-h"><span class="hl y" data-i18n="res.title"></span></h1>
+      <p class="eyebrow" data-i18n="res.eyebrow"></p>
+      <h1 class="res-h" data-i18n="res.title"></h1>
 
       <article class="card reveal hero-res" id="heroRes"></article>
-
       <article class="card reveal" id="sumCard"></article>
 
       <div class="grid2">
@@ -139,7 +145,8 @@
 
     <!-- MÉTHODE -->
     <section id="about" class="view">
-      <h1 class="res-h"><span class="hl p" data-i18n="about.title"></span></h1>
+      <p class="eyebrow" data-i18n="about.eyebrow"></p>
+      <h1 class="res-h" data-i18n="about.title"></h1>
       <article class="card prose">
         <h3 data-i18n="about.h1"></h3><p data-i18n="about.p1"></p>
         <h3 data-i18n="about.h2"></h3><p data-i18n="about.p2"></p>
@@ -150,15 +157,9 @@
     </section>
   </main>
 
-  <nav class="tabbar" aria-label="Navigation">
-    <button data-nav="test" aria-current="page"><span class="ui" data-icon="list"></span><span data-i18n="nav.test"></span></button>
-    <button data-nav="results"><span class="ui" data-icon="chart"></span><span data-i18n="nav.results"></span></button>
-    <button data-nav="about"><span class="ui" data-icon="info"></span><span data-i18n="nav.about"></span></button>
-  </nav>
-
   <div class="modal" id="shareModal" hidden role="dialog" aria-modal="true" aria-labelledby="shareTitle">
     <div class="modal-box">
-      <button class="rbtn small modal-x" id="shareClose" aria-label="Fermer"><span class="ui" data-icon="close"></span></button>
+      <button class="tbtn modal-x" id="shareClose" aria-label="Fermer"><span class="ui" data-icon="close"></span></button>
       <h3 id="shareTitle" data-i18n="share.modal.t"></h3>
       <img id="shareImg" alt="Image de partage Simu">
       <p class="note center" data-i18n="share.modal.h"></p>

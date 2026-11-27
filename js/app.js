@@ -36,7 +36,8 @@
   /* ---------- Icônes statiques ---------- */
   function initIcons() {
     $('#logo').innerHTML = Icons.logo(28);
-    $('#calcLogo').innerHTML = Icons.logo(64);
+    $('#calcLogo').innerHTML = Icons.logo(60);
+    $('#dial').innerHTML = Charts.dial();
     $$('[data-icon]').forEach(el => { el.innerHTML = Icons.svg(el.dataset.icon, el.dataset.hue ? { hue: +el.dataset.hue, size: 26 } : { mono: true, size: 20 }); });
     $('#calcIcons').innerHTML = AXES.map(ax => Icons.badge(ax.id, ax.hue, 44)).join('');
   }
@@ -50,13 +51,13 @@
   const NAV = { home: 'test', quiz: 'test', calc: 'test', results: 'results', about: 'about' };
   function show(id) {
     $$('.view').forEach(v => v.classList.toggle('active', v.id === id));
-    $$('.tabbar button').forEach(b => { if (b.dataset.nav === NAV[id]) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
+    $$('.nav button').forEach(b => { if (b.dataset.nav === NAV[id]) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
     updateNav();
     window.scrollTo({ top: 0 });
   }
   /** « Résultats » n'est cliquable que s'il y a un résultat (en mémoire ou gardé dans le navigateur). */
   function updateNav() {
-    const b = $('.tabbar [data-nav="results"]');
+    const b = $('.nav [data-nav="results"]');
     if (b) b.disabled = !(state.answers.length && state.list.length) && !LS.get('simu.last');
   }
   function goNav(n) {
@@ -87,17 +88,18 @@
     show('quiz'); renderQuestion(1);
   }
   function renderAnswers() {
-    const sizes = [62, 48, 38, 48, 62], cols = ['#ee5fa7', '#ef8f7e', '#fff4dc', '#7be3b5', '#2fc99a'];
+    // Règle graduée à 5 crans : −− − · + ++
+    const sym = ['−−', '−', '·', '+', '++'];
     $('#answers').innerHTML = [0, 1, 2, 3, 4].map(i => `
-      <button class="ans" data-v="${i}" style="--s:${sizes[i]}px;--c:${cols[i]}" aria-label="${t('ans.' + i)} (${i + 1})" title="${t('ans.' + i)} (${i + 1})">
-        <span class="dot">${Icons.svg('check', { mono: true, size: 22, sw: 4.5 })}</span><span class="lbl">${t('ans.' + i)}</span>
+      <button class="ans" data-v="${i}" aria-label="${t('ans.' + i)} (${i + 1})" title="${t('ans.' + i)} (${i + 1})">
+        <span class="dot">${sym[i]}</span><span class="lbl">${t('ans.' + i)}</span>
       </button>`).join('');
   }
   function renderQuestion(dir) {
     const q = state.list[state.idx], ax = AXES.find(a => a.id === q.axis);
     $('#qCount').textContent = t('q.of', { n: state.idx + 1, t: state.list.length });
     $('#barFill').style.width = (state.idx / state.list.length * 100) + '%';
-    $('#qChip').innerHTML = `${Icons.svg(ax.id, { hue: ax.hue, size: 20 })}<span>${ax.name[state.lang]}</span>`;
+    $('#qChip').innerHTML = `${Icons.svg(ax.id, { hue: ax.hue, size: 22 })}<span>${ax.name[state.lang]}</span>`;
     $('#qChip').style.setProperty('--h', ax.hue);
     $('#qText').textContent = q.text[state.lang];
     $('#backBtn').style.visibility = state.idx ? 'visible' : 'hidden';
@@ -304,7 +306,7 @@
     if (document.fonts && document.fonts.ready) await document.fonts.ready;
     const fam = tops.families[0];
     await Charts.shareImage(canvas, {
-      lang: L, vec, top: fam.item, title: t('hero.badge').split('•')[0].trim(), matchText: t('res.match', { p: fam.sim }),
+      lang: L, vec, top: fam.item, eyebrow: t('res.closest'), title: t('hero.badge').split('•')[0].trim(), matchText: t('res.match', { p: fam.sim }),
       lr: { pos, label: t('lr.' + Engine.lrLevel(pos)), left: t('lr.l'), right: t('lr.r') },
       facts: data.filter(d => d.fact).map(d => { const r = reliable(tops[d.id])[0]; return { label: t(d.fact), name: r.item.name[L], sim: r.sim, hue: r.item.hue }; }),
       footer: t('share.footer'),

@@ -51,8 +51,7 @@
     skip:     (a) => `<path d="M10 12l16 12-16 12zM34 12v24" ${ln(a)}/>`,
   };
 
-  const INK = '#1f1030';
-  const colors = (hue, mono) => mono ? ['currentColor', 'none'] : [INK, `hsl(${hue} 88% 68%)`];
+  const colors = (hue, mono) => mono ? ['currentColor', 'none'] : [`hsl(${hue} 92% 72%)`, `hsla(${hue},92%,60%,.22)`];
 
   function inner(name, hue, mono) { const [a, b] = colors(hue, mono); return (I[name] || I.check)(a, b); }
 
@@ -79,7 +78,7 @@
     return `<svg class="logo-svg" viewBox="0 0 48 48" width="${size}" height="${size}" fill="none" aria-hidden="true">
       <circle cx="24" cy="24" r="17" stroke="currentColor" stroke-width="3.2"/>
       <path d="M24 4v5M24 39v5M4 24h5M39 24h5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
-      <g class="needle"><path d="M31 17l-5 10-10 5 5-10z" fill="currentColor"/><circle cx="24" cy="24" r="2.600" fill="#ee5fa7"/></g></svg>`;
+      <g class="needle"><path d="M31 17l-5 10-10 5 5-10z" fill="currentColor"/><circle cx="24" cy="24" r="2.600" fill="#ff7849"/></g></svg>`;
   }
   /** Pastille avec texte (sigle, code pays, initiales). */
   function text(label, hue, size = 40) {
