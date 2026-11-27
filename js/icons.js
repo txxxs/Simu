@@ -44,10 +44,15 @@
     back:     (a) => `<path d="M30 10L16 24l14 14" ${ln(a)}/>`,
     next:     (a) => `<path d="M18 10l14 14-14 14" ${ln(a)}/>`,
     close:    (a) => `<path d="M12 12l24 24M36 12L12 36" ${ln(a)}/>`,
+    list:     (a) => `<circle cx="9" cy="12" r="2.600" ${ln(a)}/><circle cx="9" cy="24" r="2.600" ${ln(a)}/><circle cx="9" cy="36" r="2.600" ${ln(a)}/><path d="M18 12h24M18 24h24M18 36h24" ${ln(a)}/>`,
+    chart:    (a) => `<rect x="7" y="26" width="8" height="15" rx="2" ${ln(a)}/><rect x="20" y="16" width="8" height="25" rx="2" ${ln(a)}/><rect x="33" y="7" width="8" height="34" rx="2" ${ln(a)}/>`,
+    info:     (a) => `<circle cx="24" cy="24" r="18" ${ln(a)}/><path d="M24 22v12" ${ln(a)}/>${dot(a, 24, 15, 2.400)}`,
+    contrast: (a) => `<circle cx="24" cy="24" r="17" ${ln(a)}/><path d="M24 7a17 17 0 0 1 0 34z" fill="${a}" stroke="${a}"/>`,
     skip:     (a) => `<path d="M10 12l16 12-16 12zM34 12v24" ${ln(a)}/>`,
   };
 
-  const colors = (hue, mono) => mono ? ['currentColor', 'none'] : [`hsl(${hue} 92% 74%)`, `hsla(${hue},92%,62%,.26)`];
+  const INK = '#1f1030';
+  const colors = (hue, mono) => mono ? ['currentColor', 'none'] : [INK, `hsl(${hue} 88% 68%)`];
 
   function inner(name, hue, mono) { const [a, b] = colors(hue, mono); return (I[name] || I.check)(a, b); }
 
@@ -72,9 +77,9 @@
   /** Logo boussole (aiguille animable). */
   function logo(size = 24) {
     return `<svg class="logo-svg" viewBox="0 0 48 48" width="${size}" height="${size}" fill="none" aria-hidden="true">
-      <circle cx="24" cy="24" r="17" stroke="#fff" stroke-width="3"/>
-      <path d="M24 4v5M24 39v5M4 24h5M39 24h5" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".7"/>
-      <g class="needle"><path d="M31 17l-5 10-10 5 5-10z" fill="#fff"/><circle cx="24" cy="24" r="2.400" fill="#7c3aed"/></g></svg>`;
+      <circle cx="24" cy="24" r="17" stroke="currentColor" stroke-width="3.2"/>
+      <path d="M24 4v5M24 39v5M4 24h5M39 24h5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+      <g class="needle"><path d="M31 17l-5 10-10 5 5-10z" fill="currentColor"/><circle cx="24" cy="24" r="2.600" fill="#ee5fa7"/></g></svg>`;
   }
   /** Pastille avec texte (sigle, code pays, initiales). */
   function text(label, hue, size = 40) {

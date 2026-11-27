@@ -18,19 +18,26 @@
   function applyLang() {
     document.documentElement.lang = state.lang;
     $$('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
-    $$('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === state.lang));
+    $('#langBtn').textContent = state.lang.toUpperCase();
     fillCountries(); renderAnswers();
     if ($('#quiz').classList.contains('active')) renderQuestion();
     if ($('#results').classList.contains('active')) renderResults(false);
   }
   function setLang(l) { state.lang = l; LS.set('simu.lang', l); applyLang(); }
 
+  /* Thème (violet / clair) et taille du texte : préférences gardées dans le navigateur */
+  const FS = [1, 1.12, 1.25];
+  function applyPrefs() {
+    const th = LS.get('simu.theme'), fs = +LS.get('simu.fs') || 0, root = document.documentElement;
+    if (th) root.dataset.theme = th; else root.removeAttribute('data-theme');
+    root.style.setProperty('--fs', FS[fs] || 1);
+  }
+
   /* ---------- Icônes statiques ---------- */
   function initIcons() {
-    $('#logo').innerHTML = Icons.logo(26);
+    $('#logo').innerHTML = Icons.logo(28);
     $('#calcLogo').innerHTML = Icons.logo(64);
     $$('[data-icon]').forEach(el => { el.innerHTML = Icons.svg(el.dataset.icon, el.dataset.hue ? { hue: +el.dataset.hue, size: 26 } : { mono: true, size: 20 }); });
-    $('#orbit').innerHTML = AXES.map((ax, i) => `<div class="o" style="--a:${i * 30}deg"><div class="oi" style="--a:${i * 30}deg">${Icons.badge(ax.id, ax.hue, 52)}</div></div>`).join('');
     $('#calcIcons').innerHTML = AXES.map(ax => Icons.badge(ax.id, ax.hue, 44)).join('');
   }
 
@@ -40,7 +47,31 @@
     try { history.replaceState(null, '', h ? '#' + h : location.pathname + location.search); }
     catch (e) { try { location.hash = h; } catch (_) {} }
   }
-  function show(id) { $$('.view').forEach(v => v.classList.toggle('active', v.id === id)); window.scrollTo({ top: 0 }); }
+  const NAV = { home: 'test', quiz: 'test', calc: 'test', results: 'results', about: 'about' };
+  function show(id) {
+    $$('.view').forEach(v => v.classList.toggle('active', v.id === id));
+    $$('.tabbar button').forEach(b => { if (b.dataset.nav === NAV[id]) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
+    updateNav();
+    window.scrollTo({ top: 0 });
+  }
+  /** « Résultats » n'est cliquable que s'il y a un résultat (en mémoire ou gardé dans le navigateur). */
+  function updateNav() {
+    const b = $('.tabbar [data-nav="results"]');
+    if (b) b.disabled = !(state.answers.length && state.list.length) && !LS.get('simu.last');
+  }
+  function goNav(n) {
+    if (n === 'about') return show('about');
+    if (n === 'results') {
+      if ($('#results').classList.contains('active')) return;
+      if (!(state.answers.length && state.list.length)) {
+        const d = Engine.decode(LS.get('simu.last') || '');
+        if (!d) return;
+        Object.assign(state, { country: d.country, mode: d.mode, answers: d.answers, list: Engine.questionList(d.country, d.mode) });
+      }
+      show('results'); renderResults(true); return;
+    }
+    show('home');
+  }
   function fillCountries() {
     const keys = Object.keys(COUNTRIES), sel = $('#country');
     $('#countryRow').hidden = keys.length < 2;
@@ -56,7 +87,7 @@
     show('quiz'); renderQuestion(1);
   }
   function renderAnswers() {
-    const sizes = [62, 48, 38, 48, 62], cols = ['#f43f5e', '#fb923c', '#94a3b8', '#4ade80', '#10b981'];
+    const sizes = [62, 48, 38, 48, 62], cols = ['#ee5fa7', '#ef8f7e', '#fff4dc', '#7be3b5', '#2fc99a'];
     $('#answers').innerHTML = [0, 1, 2, 3, 4].map(i => `
       <button class="ans" data-v="${i}" style="--s:${sizes[i]}px;--c:${cols[i]}" aria-label="${t('ans.' + i)} (${i + 1})" title="${t('ans.' + i)} (${i + 1})">
         <span class="dot">${Icons.svg('check', { mono: true, size: 22, sw: 4.5 })}</span><span class="lbl">${t('ans.' + i)}</span>
@@ -99,7 +130,9 @@
     state.busy = true; await slide(-1, () => { state.idx--; renderQuestion(-1); }); state.busy = false;
   }
   async function finish() {
-    setHash('r-' + Engine.encode(state.country, state.mode, state.answers));
+    const enc = Engine.encode(state.country, state.mode, state.answers);
+    LS.set('simu.last', enc);
+    setHash('r-' + enc);
     show('calc');
     const ic = $$('#calcIcons .bico'); ic.forEach(e => e.classList.remove('on'));
     $('#calc').classList.remove('run'); void $('#calc').offsetWidth; $('#calc').classList.add('run');
@@ -293,7 +326,10 @@
   /* ---------- Événements ---------- */
   document.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
-    if (b.dataset.lang) setLang(b.dataset.lang);
+    if (b.id === 'langBtn') setLang(state.lang === 'fr' ? 'en' : 'fr');
+    else if (b.id === 'fsBtn') { LS.set('simu.fs', ((+LS.get('simu.fs') || 0) + 1) % FS.length); applyPrefs(); }
+    else if (b.id === 'themeBtn') { LS.set('simu.theme', LS.get('simu.theme') === 'light' ? '' : 'light'); applyPrefs(); }
+    else if (b.dataset.nav) goNav(b.dataset.nav);
     else if (b.classList.contains('mode')) { state.mode = b.dataset.mode; $$('.mode').forEach(m => m.setAttribute('aria-pressed', m === b)); }
     else if (b.classList.contains('ans')) answer(+b.dataset.v);
     else if (b.dataset.tab) { state.tab = b.dataset.tab; state.showAll = false; renderMatch(); }
@@ -346,6 +382,6 @@
   }
   const saved = LS.get('simu.lang');
   state.lang = saved && I18N[saved] ? saved : ((navigator.language || 'fr').toLowerCase().startsWith('en') ? 'en' : 'fr');
-  initIcons(); applyLang(); loadFromHash();
+  applyPrefs(); initIcons(); applyLang(); loadFromHash(); updateNav();
   window.addEventListener('hashchange', () => { if (!loadFromHash() && !location.hash) show('home'); });
 })();
